@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
 class BufferStateObject
 {
-    public byte[] buffer = new byte[1024];
+    public byte[] buffer = new byte[8192];
 }
 
 /// <summary>
@@ -19,6 +20,7 @@ public class TcpConnection : IDisposable
     public delegate void TcpMessageHandler(int byteCount, byte[] data);
     public event TcpMessageHandler MessageRecieved;
     private bool Sending;
+    private Queue<byte[]> _MessageQueue = new Queue<byte[]>();
 
     TcpClient _Connection;
 
@@ -31,6 +33,10 @@ public class TcpConnection : IDisposable
     public void SendMessage(byte[] data)
     {
         if (Sending)
+        {
+            _MessageQueue.Enqueue(data);
+        }
+        else
         {
             try
             {
@@ -50,6 +56,10 @@ public class TcpConnection : IDisposable
     {
         _Connection.Client.EndSend(ar);
         Sending = false;
+        if(_MessageQueue.Count > 0)
+        {
+            SendMessage(_MessageQueue.Dequeue());
+        }
     }
 
     private void ListenForMessages()
@@ -75,7 +85,9 @@ public class TcpConnection : IDisposable
     {
         int recievedBytes = _Connection.Client.EndReceive(ar);
         BufferStateObject state = ar.AsyncState as BufferStateObject;
-        MainThreadDispatcher.Instance.RunOnMainThread(() => InvokeRecievedEvent(recievedBytes, state.buffer));
+        byte[] data = new byte[recievedBytes];
+        Array.Copy(state.buffer, data, recievedBytes);
+        MainThreadDispatcher.Instance.RunOnMainThread(() => InvokeRecievedEvent(recievedBytes, data));
         ListenForMessages();
     }
     private void InvokeRecievedEvent(int byteCount, byte[] data)

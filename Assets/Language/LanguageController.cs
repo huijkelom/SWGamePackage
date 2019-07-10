@@ -24,8 +24,8 @@ public class LanguageController : MonoBehaviour
         }
         else
         {
+            Debug.LogWarning("LanguageController | Awake | A second language controller was loaded, maybe you should make a initialisation scene?");
             Destroy(this);
-            Debug.LogWarning("A second language controller was loaded, maybe you should make a initialisation scene?");
         }
 
         //Inventorise what languages are availible
