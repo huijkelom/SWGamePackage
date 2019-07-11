@@ -205,6 +205,8 @@ GameObject:
   - component: {fileID: 2062599220}
   - component: {fileID: 2062599219}
   - component: {fileID: 2062599218}
+  - component: {fileID: 2062599222}
+  - component: {fileID: 2062599221}
   m_Layer: 0
   m_Name: GameMaster
   m_TagString: Untagged
@@ -250,3 +252,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2062599221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062599217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6247f6586de965043bf873897016bc74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InputType: 0
+  CameraType: 1
+  AverageAllInputsToOnePoint: 0
+  UninteractableAreaSize: 10
+  Size: 0
+  Force: 0
+  Ball: {fileID: 4717627183230071877, guid: fa809625e7fab3543bb4b11f05ce58d8, type: 3}
+--- !u!114 &2062599222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062599217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff8143b7dcf3d342b8ae1bcd89865fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

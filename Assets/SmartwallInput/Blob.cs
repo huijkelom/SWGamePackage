@@ -8,16 +8,14 @@ using UnityEngine;
 public class Blob
 {
     public int Id;
-    public float X;
-    public float Y;
+    public Vector2 Position;
     public float Width;
     public float Height;
 
     public Blob(int id, float x, float y, float width, float height)
     {
         Id = id;
-        X = x;
-        Y = y;
+        Position = new Vector2(x, y);
         Width = width;
         Height = height;
     }
