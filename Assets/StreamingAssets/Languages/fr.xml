@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<LanguageContainer xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Texts>
+    <string>Bonjour et bienvenue</string>
+  </Texts>
+  <Images />
+  <AudioFiles />
+</LanguageContainer>
