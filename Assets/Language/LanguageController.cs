@@ -9,6 +9,7 @@ public class LanguageController : MonoBehaviour
 
     public delegate void LanguageEventHandler();
     public static event LanguageEventHandler LanguageChangedEvent;
+    public static string LanguageLoaded = string.Empty;
 
     private static LanguageContainer _CurrentLanguage;
     private List<string> _AvailibleLanguages;
@@ -72,6 +73,11 @@ public class LanguageController : MonoBehaviour
         if (_AvailibleLanguages.Contains(languageCode))
         {
             _CurrentLanguage = XML_to_Class.LoadClassFromXML<LanguageContainer>("\\StreamingAssets\\Languages\\" + languageCode + ".xml");
+            LanguageLoaded = languageCode;
+            if (LanguageChangedEvent != null) //could be nothing is registered
+            {
+                LanguageChangedEvent.Invoke();
+            }
         }
         else
         {
@@ -123,7 +129,7 @@ public class LanguageController : MonoBehaviour
         {
             Debug.LogError("LanguageController | GetText | Missing an instance of LanguageController");
         }
-        return "Missing language file.";
+        return string.Empty;
     }
 
     /// <summary>
@@ -145,6 +151,6 @@ public class LanguageController : MonoBehaviour
         {
             Debug.LogError("LanguageController | GetText | Missing an instance of LanguageController");
         }
-        return "Missing language file.";
+        return string.Empty;
     }
 }

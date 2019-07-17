@@ -1,4 +1,5 @@
-﻿using System;
+﻿#pragma warning disable 0168
+using System;
 using System.IO;
 using System.Xml.Serialization;
 using UnityEngine;
@@ -22,7 +23,6 @@ using UnityEngine;
 /// </summary>
 public class XML_to_Class
 {
-    //Loading
 
     /// <summary>
     /// Loads a class from an XML file at the given path.
@@ -67,18 +67,20 @@ public class XML_to_Class
     /// <returns>Instance of the givven class loaded from the XML, NULL if the file is not found.</returns>
     public static T LoadClassFromXMLOutsideData<T>(string absoluteFilePath)
     {
+        bool temp;
         try
         {
-            if (!(Path.IsPathRooted(absoluteFilePath) && absoluteFilePath.Contains(Path.VolumeSeparatorChar.ToString())))
-            {
-                throw new ArgumentException("XML_to_Class | LoadClassFromXMLOutsideData | Given path is NOT an absolute path, this method is for reading XML files that are not in the aplications data folder, as sutch it doesn't know what this path is relative to.  Use \"LoadClassFromXML\" if you want to load an XML file in the applications data folder.");
-            }
-            return _LoadClassFromXML<T>(absoluteFilePath, false);
+            temp = !(Path.IsPathRooted(absoluteFilePath) && absoluteFilePath.Contains(Path.VolumeSeparatorChar.ToString()));
         }
-        catch(ArgumentException aEx)
+        catch (ArgumentException aEx)
         {
             throw new ArgumentException("XML_to_Class | LoadClassFromXMLOutsideData | The given path is invalid: " + absoluteFilePath);
         }
+        if (temp)
+        {
+            throw new ArgumentException("XML_to_Class | LoadClassFromXMLOutsideData | Given path is NOT an absolute path, this method is for reading XML files that are not in the aplications data folder, as sutch it doesn't know what this path is relative to.  Use \"LoadClassFromXML\" if you want to load an XML file in the applications data folder.");
+        }
+        return _LoadClassFromXML<T>(absoluteFilePath, false);
     }
 
     //Further handels checking of parameters and does the actual loading.
@@ -115,7 +117,7 @@ public class XML_to_Class
         if (!File.Exists(absoluteFilePath)) { Debug.LogWarning("XML_to_Class | LoadClassFromXML(OutsideData) | Atempted to load non-exsistant XML file: " + absoluteFilePath); return default(T); }
 
         //Actual loading of the file
-        XmlSerializer s = new XmlSerializer(typeof(T));
+        XmlSerializer s = XmlSerializer.FromTypes(new[] { typeof(T) })[0];
         FileStream stream = new FileStream(absoluteFilePath, FileMode.Open, FileAccess.Read);
         T temp = (T)s.Deserialize(stream);
         stream.Dispose();

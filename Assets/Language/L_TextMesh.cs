@@ -4,7 +4,7 @@
 /// Attach this class to an item with a TextMesh to connect it to the langauge management system.
 /// Input the ID of the text in the list of text entries, if you don't link a TextMesh to change 
 /// via the inspector it will search for a TextMesh on its gameobject, if non is found it will 
-/// post a waring in console.
+/// post a warning in console.
 /// If you are dealing with a Unity.UI.Text instead of a TextMesh use the L_Text instead.
 /// </summary>
 public class L_TextMesh : MonoBehaviour
@@ -30,7 +30,10 @@ public class L_TextMesh : MonoBehaviour
         }
         //register for language change
         LanguageController.LanguageChangedEvent += GetTextFromLanguageControllerAndPlaceItOnLabel;
-        GetTextFromLanguageControllerAndPlaceItOnLabel();
+        if (!LanguageController.LanguageLoaded.Equals(string.Empty))
+        {
+            GetTextFromLanguageControllerAndPlaceItOnLabel();
+        }
     }
 
     private void GetTextFromLanguageControllerAndPlaceItOnLabel()

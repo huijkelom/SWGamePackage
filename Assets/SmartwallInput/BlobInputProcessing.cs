@@ -11,6 +11,7 @@ public enum CameraTypes { Perspective, Orthographic}
 /// script, it will call the Hit() function on said script. Detection is done on layer 8.
 /// In Physical input mode an invisible ball is thrown at the impact point, only work with 3D physics. 
 /// If you want the ball to only hit certain things consider useing https://docs.unity3d.com/Manual/LayerBasedCollision.html
+/// Note that it is possible to have multiple BlobInputProcessing in a scene if you want to have a mix of detection types.
 /// </summary>
 public class BlobInputProcessing : MonoBehaviour
 {
@@ -25,11 +26,9 @@ public class BlobInputProcessing : MonoBehaviour
     /// </summary>
     [Range(0,130)]
     public byte UninteractableAreaSize;
-    [Space(20)]
     [Header("Settings for physical interaction type.")]
     public byte Size;
     public byte Force;
-    [Space(5)]
     [Header("Do not change!")]
     public GameObject Ball;
 
