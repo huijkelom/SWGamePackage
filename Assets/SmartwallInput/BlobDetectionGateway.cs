@@ -21,7 +21,7 @@ public class BlobDetectionGateway : MonoBehaviour
     /// <summary>
     /// The most recent blobs detected by the detection software.
     /// </summary>
-    public static List<Blob> Blobs;
+    public static List<Blob> Blobs = new List<Blob>();
     TcpConnection _Connection;
     private int _BlobDataSize = 20;
     private List<byte> _TotalData = new List<byte>();
@@ -54,9 +54,16 @@ public class BlobDetectionGateway : MonoBehaviour
     {
         TcpClient temp = ar.AsyncState as TcpClient;
         temp.EndConnect(ar);
-        lock (_Connection)
+        if (_Connection == null)
         {
             _Connection = new TcpConnection(temp);
+        }
+        else
+        {
+            lock (_Connection)
+            {
+                _Connection = new TcpConnection(temp);
+            }
         }
         _Connection.MessageRecieved += MessageFromDSoft;
         _Connection.Disconnected += ConnectionLost;
@@ -125,7 +132,7 @@ public class BlobDetectionGateway : MonoBehaviour
     private void LoadNewBlobsFromData(int nrOfBlobs, byte[] data)
     {
         Blobs.Clear();
-        for (int i = 0; i < data[3]; i++)
+        for (int i = 0; i < nrOfBlobs; i++)
         {
             //one blob is 20 bytes of data; offset of message number + ofset of value in data segment
             int id = BitConverter.ToInt32(data, i * _BlobDataSize);
@@ -135,7 +142,10 @@ public class BlobDetectionGateway : MonoBehaviour
             float height = BitConverter.ToSingle(data, i * _BlobDataSize + 16);
             Blobs.Add(new Blob(id, x, y, width, height));
         }
-        NewBlobData.Invoke(Blobs);
+        if (NewBlobData != null)
+        {
+            NewBlobData.Invoke(Blobs);
+        }
     }
 
     private void ConnectionLost(string message)
