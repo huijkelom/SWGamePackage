@@ -2,7 +2,10 @@
 using System.IO;
 using UnityEngine;
 
-
+/// <summary>
+/// You have to change the XML header in its file to: <?xml version="1.0" encoding="ISO-8859-1" ?>
+/// This is to support the special charcters used in languages like french etc.
+/// </summary>
 public class LanguageController : MonoBehaviour
 {
     public static LanguageController Instance;

@@ -1,7 +1,7 @@
 ﻿#pragma warning disable 0168
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum InputTypes { Raycast2D, Raycast3D, Physical}
@@ -42,9 +42,10 @@ public class BlobInputProcessing : MonoBehaviour
     //Every frame we check for blob and mouse input
     private void FixedUpdate()
     {
-        foreach(KeyValuePair<Vector2,bool> kvp in _InteractedPoints)
+        List<Vector2> temp = _InteractedPoints.Keys.ToList();
+        for(int i = 0; i<temp.Count;i++)
         {
-            _InteractedPoints[kvp.Key] = false;
+            _InteractedPoints[temp[i]] = false;
         }
         if (AverageAllInputsToOnePoint)
         {
@@ -72,12 +73,17 @@ public class BlobInputProcessing : MonoBehaviour
             InteractInput(Input.mousePosition, 0.1f);
         }
 
+        List<Vector2> toRemove = _InteractedPoints.Where(kvp => (kvp.Value == false)).Select(kvp => kvp.Key).ToList();
+        foreach (Vector2 theKey in toRemove)
+        {
+            _InteractedPoints.Remove(theKey);
+        }
     }
 
     /// <summary>
     /// Attempts to raycast or point/circle overlap at the given location to "collide" with an object.
     /// On succes it will try to fetch a class implementing I_SmartwallInteractable on the gameobject 
-    /// it hit and call the Hit(Vector3 hitPosition).
+    /// it hit and call the Hit(Vector3 hitPosition) method.
     /// </summary>
     private void InteractInput(Vector2 screenPosition, float size)
     {
@@ -103,7 +109,10 @@ public class BlobInputProcessing : MonoBehaviour
                     RaycastHit[] hits = Physics.CapsuleCastAll(ray.origin, ray.origin + ray.direction, size * Screen.width, ray.direction);
                     foreach(RaycastHit hit in hits)
                     {
-                        hit.transform.gameObject.GetComponent<I_SmartwallInteractable>()?.Hit(hit.point);
+                        foreach (I_SmartwallInteractable script in hit.transform.gameObject.GetComponents<I_SmartwallInteractable>())
+                        {
+                            script.Hit(hit.point);
+                        }
                     }
                 }
                 else
@@ -111,7 +120,10 @@ public class BlobInputProcessing : MonoBehaviour
                     RaycastHit hit = new RaycastHit();
                     if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity))
                     {
-                        hit.transform.gameObject.GetComponent<I_SmartwallInteractable>()?.Hit(hit.point);
+                        foreach (I_SmartwallInteractable script in hit.transform.gameObject.GetComponents<I_SmartwallInteractable>())
+                        {
+                            script.Hit(hit.point);
+                        }
                     }
                 }
                 break;
@@ -129,8 +141,10 @@ public class BlobInputProcessing : MonoBehaviour
                 }
                 foreach (Collider2D hit2D in hits2D)
                 {
-                    hit2D.gameObject.GetComponent<I_SmartwallInteractable>()?.Hit(new Vector3(point.x, point.y, 0f));
-                    //?. means only do if object is not null
+                    foreach (I_SmartwallInteractable script in hit2D.transform.gameObject.GetComponents<I_SmartwallInteractable>())
+                    {
+                        script.Hit(new Vector3(point.x, point.y, 0f));
+                    }
                 }
                 break;
             case InputTypes.Physical:
