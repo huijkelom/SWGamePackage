@@ -4,21 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public enum InputTypes { Raycast2D, Raycast3D, Physical}
-public enum CameraTypes { Perspective, Orthographic}
+public enum InputTypes { Raycast2D, Raycast3D}
 
 /// <summary>
-/// This class take the Blob data and translates it to interaction. 2D and 3D input modes will fetch 
-/// the object at the input point of the ball and if it is in possesion of a collider and an I_SmartwallInteractable
-/// script, it will call the Hit() function on said script. Detection is done on layer 8.
-/// In Physical input mode an invisible ball is thrown at the impact point, only work with 3D physics. 
-/// If you want the ball to only hit certain things consider useing https://docs.unity3d.com/Manual/LayerBasedCollision.html
-/// Note that it is possible to have multiple BlobInputProcessing in a scene if you want to have a mix of detection types.
+/// This class take the Blob data and translates it to interaction. The class will use a cylinder cast / overlap circle
+/// the size of wich is determined by the size of the ball as detected by the system. If AccountForBallSize is false
+/// a raycast from the center of the ball will be used instead. All gameobjects with colliders in the casted path will
+/// have the Hit() methos called on all thier scripts implemneting the I_SmartwallInteractible interface.
+/// Note that it is possible to have multiple BlobInputProcessing in a scene if you want to use 2D and 3D detection.
 /// </summary>
 public class BlobInputProcessing : MonoBehaviour
 {
     public InputTypes InputType;
-    public CameraTypes CameraType;
     /// <summary>
     /// rather then interacting on a single point should everthing in the balls radius be hit?
     /// </summary>
