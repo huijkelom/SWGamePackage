@@ -144,24 +144,24 @@ public class BlobInputProcessing : MonoBehaviour
                     }
                 }
                 break;
-            case InputTypes.Physical:
-                if (Ball == null)
-                {
-                    Debug.LogError("BlobInputProcessing | InteractInput | Missing throwable object. Please link the default 'ball' provided in the package.");
-                    return;
-                }
-                Ray ray2 = Camera.main.ScreenPointToRay(new Vector3(screenPosition.x, screenPosition.y, 0f));
-                GameObject ball = Instantiate(Ball, ray2.origin, Quaternion.identity);
-                ball.transform.localScale = new Vector3(size * Screen.width, size * Screen.width, size * Screen.width);
-                try
-                {
-                    ball.GetComponent<Rigidbody>().AddForce(ray2.direction * Force, ForceMode.Impulse);
-                }
-                catch (NullReferenceException nREx)
-                {
-                    Debug.LogError("BlobInputProcessing | InteractInput | You have changed the throw object but the new object is missing a Rigidbody!");
-                }
-                break;
+            //case InputTypes.Physical:
+            //    if (Ball == null)
+            //    {
+            //        Debug.LogError("BlobInputProcessing | InteractInput | Missing throwable object. Please link the default 'ball' provided in the package.");
+            //        return;
+            //    }
+            //    Ray ray2 = Camera.main.ScreenPointToRay(new Vector3(screenPosition.x, screenPosition.y, 0f));
+            //    GameObject ball = Instantiate(Ball, ray2.origin, Quaternion.identity);
+            //    ball.transform.localScale = new Vector3(size * Screen.width, size * Screen.width, size * Screen.width);
+            //    try
+            //    {
+            //        ball.GetComponent<Rigidbody>().AddForce(ray2.direction * Force, ForceMode.Impulse);
+            //    }
+            //    catch (NullReferenceException nREx)
+            //    {
+            //        Debug.LogError("BlobInputProcessing | InteractInput | You have changed the throw object but the new object is missing a Rigidbody!");
+            //    }
+            //    break;
         }
 
     }
