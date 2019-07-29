@@ -2,11 +2,11 @@
 
 public class GlobalGameSettingsContainer
 {
-    public byte Players;
-    public byte Difficulty;
+    public byte Players = 1;
+    public byte Difficulty = 1;
 }
 
-public class GlobalGameSettings
+public static class GlobalGameSettings
 {
     private static GlobalGameSettingsContainer settings;
     public static byte Players
@@ -16,6 +16,10 @@ public class GlobalGameSettings
             if (settings == null)
             {
                 settings = XML_to_Class.LoadClassFromXML<GlobalGameSettingsContainer>("SavedData" + Path.DirectorySeparatorChar + "GlobalGameSettings.xml");
+            }
+            if (settings == null) //file was missing, use default.
+            {
+                settings = new GlobalGameSettingsContainer();
             }
             return settings.Players;
         }
@@ -27,6 +31,10 @@ public class GlobalGameSettings
             if (settings == null)
             {
                 settings = XML_to_Class.LoadClassFromXML<GlobalGameSettingsContainer>("SavedData" + Path.DirectorySeparatorChar + "GlobalGameSettings.xml");
+            }
+            if (settings == null) //file was missing, use default.
+            {
+                settings = new GlobalGameSettingsContainer();
             }
             return settings.Difficulty;
         }

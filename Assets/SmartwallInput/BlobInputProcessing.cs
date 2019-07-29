@@ -29,10 +29,6 @@ public class BlobInputProcessing : MonoBehaviour
     /// </summary>
     [Range(0,130)]
     public byte UninteractableAreaSize;
-    [Header("Setting for physical interaction type.")]
-    public byte Force;
-    [Header("Do not change!")]
-    public GameObject Ball;
 
     private Dictionary<Vector2,bool> _InteractedPoints = new Dictionary<Vector2, bool>();
 

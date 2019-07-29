@@ -21,7 +21,7 @@ using UnityEngine;
 /// It will not stop you from useing it with non container classes and will work on any class.
 /// A List is also a class so those work as well.
 /// </summary>
-public class XML_to_Class
+public static class XML_to_Class
 {
 
     /// <summary>
