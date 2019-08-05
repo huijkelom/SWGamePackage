@@ -63,7 +63,7 @@ public class BlobInputProcessing : MonoBehaviour
         }
         if (Input.GetMouseButton(0))
         {
-            InteractInput(Input.mousePosition, 0.1f);
+            InteractInput(new Vector2(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height), 0.1f);
         }
 
         List<Vector2> toRemove = _InteractedPoints.Where(kvp => (kvp.Value == false)).Select(kvp => kvp.Key).ToList();

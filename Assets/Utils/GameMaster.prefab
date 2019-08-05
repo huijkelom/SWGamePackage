@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7580370671467913577}
   - component: {fileID: 7580370671467913576}
   - component: {fileID: 7580370671467913579}
+  - component: {fileID: 1292733122895889457}
   m_Layer: 0
   m_Name: GameMaster
   m_TagString: Untagged
@@ -96,9 +97,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InputType: 0
-  CameraType: 1
+  AccountForBallSize: 0
   AverageAllInputsToOnePoint: 0
   UninteractableAreaSize: 7
-  Size: 2
-  Force: 10
-  Ball: {fileID: 4717627183230071877, guid: fa809625e7fab3543bb4b11f05ce58d8, type: 3}
+--- !u!114 &1292733122895889457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7580370671467913580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fe4da0d453883f4ebc71d3802ddf33c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HighscoreColour: {r: 0, g: 0, b: 0, a: 1}
+  PlayerColours:
+  - {r: 1, g: 0.4117647, b: 0.4117647, a: 1}
+  - {r: 0.5803922, g: 0.6862745, b: 1, a: 1}
+  - {r: 0.3372549, g: 0.8156863, b: 0.3019608, a: 1}
+  - {r: 0.93333334, g: 0.9411765, b: 0.31764707, a: 1}
+  - {r: 0.8235294, g: 0.31764707, b: 0.9411765, a: 1}
+  - {r: 0.31764707, g: 0.9411765, b: 0.74509805, a: 1}
+  - {r: 0.9411765, g: 0.6862745, b: 0.31764707, a: 1}
+  - {r: 1, g: 0.627451, b: 0.8039216, a: 1}
