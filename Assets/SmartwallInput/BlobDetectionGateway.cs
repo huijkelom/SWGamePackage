@@ -138,6 +138,7 @@ public class BlobDetectionGateway : MonoBehaviour
             int id = BitConverter.ToInt32(data, i * _BlobDataSize);
             float x = BitConverter.ToSingle(data, i * _BlobDataSize + 4);
             float y = BitConverter.ToSingle(data, i * _BlobDataSize + 8);
+            y = 1 - y; //Unity's Y axis goes from bottom to top while normal images go from top to bottum so we invert it.
             float width = BitConverter.ToSingle(data, i * _BlobDataSize + 12);
             float height = BitConverter.ToSingle(data, i * _BlobDataSize + 16);
             Blobs.Add(new Blob(id, x, y, width, height));

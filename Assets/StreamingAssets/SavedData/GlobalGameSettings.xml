@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<ArrayOfGlobalGameSetting xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <GlobalGameSetting>
+    <Label>Teams</Label>
+    <Value>1</Value>
+    <PossibleValues>
+      <string>1</string>
+      <string>2</string>
+      <string>3</string>
+      <string>4</string>
+    </PossibleValues>
+    <Default>1</Default>
+  </GlobalGameSetting>
+  <GlobalGameSetting>
+    <Label>Tijd</Label>
+    <Value>1:00</Value>
+    <PossibleValues>
+      <string>1:00</string>
+      <string>1:30</string>
+      <string>2:00</string>
+    </PossibleValues>
+    <Default>1:30</Default>
+  </GlobalGameSetting>
+  <GlobalGameSetting>
+    <Label />
+    <Value />
+    <PossibleValues />
+    <Default />
+  </GlobalGameSetting>
+</ArrayOfGlobalGameSetting>

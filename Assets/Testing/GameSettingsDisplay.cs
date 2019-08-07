@@ -11,7 +11,7 @@ public class GameSettingsDisplay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Diff.text = GlobalGameSettings.Difficulty.ToString();
-        Play.text = GlobalGameSettings.Players.ToString();
+        Diff.text = GlobalGameSettings.GetSetting("Difficulty");
+        Play.text = GlobalGameSettings.GetSetting("Players");
     }
 }

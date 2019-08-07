@@ -250,7 +250,7 @@ public static class XML_to_Class
         }
 
         XmlSerializer s = new XmlSerializer(classToSave.GetType());
-        FileStream stream = new FileStream(absoluteFilePath, FileMode.CreateNew, FileAccess.Write);
+        FileStream stream = new FileStream(absoluteFilePath, FileMode.Create, FileAccess.Write);
         s.Serialize(stream, classToSave);
         stream.Dispose();
         return true;

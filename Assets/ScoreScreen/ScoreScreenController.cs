@@ -1,7 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+public class HighscoreContainer
+{
+    public int Highscore;
+    public HighscoreContainer(int score)
+    {
+        Highscore = score;
+    }
+}
 
 /// <summary>
 /// This Class manages the score display scene. It is Important that the scene is still called "Scores".
@@ -14,9 +24,10 @@ public class ScoreScreenController : MonoBehaviour
     /// Current highscore, publicly availible incase you want to use it for something. DOES NOT PERSIST!
     /// </summary>
     public static int Highscore { get { return _Highscore; } }
-    private static int _Highscore;
+    private static int _Highscore = 0;
 
     public int IndexOfSceneToMoveTo = 1;
+    [HideInInspector]
     public float BarRiseAnimationTime = 0.7f;
     public GameObject P_Scoring;
     public GameObject ReplayButton;
@@ -47,6 +58,12 @@ public class ScoreScreenController : MonoBehaviour
 
     void Start()
     {
+        //load highscore from file
+        if(GlobalGameSettings.GetSetting("Reset Highscore").Equals("No"))
+        {
+            LoadHighscore();
+        }
+
         //check if we have all requirements linked
         if(ScoreBarBase == null) { Debug.LogError("ScoreScreenController | Start | Missing base object for score bars."); }
         if(P_Scoring == null) { Debug.LogError("ScoreScreenController | Start | Missing Link to perant panel."); }
@@ -81,6 +98,7 @@ public class ScoreScreenController : MonoBehaviour
             if(highestScore > Highscore)
             {
                 _Highscore = highestScore;
+                SaveHighscore();
             }
         }
         Invoke("EnableReplay", BarRiseAnimationTime + 1f);
@@ -99,11 +117,11 @@ public class ScoreScreenController : MonoBehaviour
         }
         ScoreBar temp = Instantiate(ScoreBarBase, P_Scoring.transform).GetComponent<ScoreBar>();
         temp.SetNewBarColour(PlayerColourContainer.GetPlayerColour(1));
-        temp.Begin(Scores[0], (float)Scores[0] / (float)highestScore, BarRiseAnimationTime, Scores[0] > Highscore, Scores[0] > Highscore);
+        temp.Begin(Scores[0], (float)Scores[0] / (float)highestScore, BarRiseAnimationTime, Scores[0] > Highscore, Scores[0] > Highscore, 0.1f);
 
         temp = Instantiate(ScoreBarBase, P_Scoring.transform).GetComponent<ScoreBar>();
         temp.SetNewBarColour(Color.black);
-        temp.Begin(Highscore, (float)Highscore / (float)highestScore, BarRiseAnimationTime, false, false);
+        temp.Begin(Highscore, (float)Highscore / (float)highestScore, BarRiseAnimationTime, false, false, 0.1f);
     }
 
     private void SetupMultiPlayer(int highestScore)
@@ -114,9 +132,19 @@ public class ScoreScreenController : MonoBehaviour
             {
                 ScoreBar temp = Instantiate(ScoreBarBase, P_Scoring.transform).GetComponent<ScoreBar>();
                 temp.SetNewBarColour(PlayerColourContainer.GetPlayerColour(i+1));
-                temp.Begin(Scores[i], (float)Scores[i] / (float)highestScore, BarRiseAnimationTime, Scores[i] > Highscore && Scores[i] == highestScore, Scores[i] == highestScore);
+                temp.Begin(Scores[i], (float)Scores[i] / (float)highestScore, BarRiseAnimationTime, Scores[i] > Highscore && Scores[i] == highestScore, Scores[i] == highestScore, 0.1f);
             }
         }
+    }
+
+    private void SaveHighscore()
+    {
+        XML_to_Class.SaveClassToXML(new HighscoreContainer(Highscore), "StreamingAssets"+ Path.DirectorySeparatorChar + "HighScore");
+    }
+
+    private void LoadHighscore()
+    {
+        _Highscore = XML_to_Class.LoadClassFromXML<HighscoreContainer>("StreamingAssets"+ Path.DirectorySeparatorChar +"HighScore").Highscore;
     }
 
     private void EnableReplay()

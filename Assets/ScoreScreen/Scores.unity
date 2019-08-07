@@ -265,6 +265,8 @@ GameObject:
   - component: {fileID: 678715375}
   - component: {fileID: 678715374}
   - component: {fileID: 678715373}
+  - component: {fileID: 678715376}
+  - component: {fileID: 678715377}
   m_Layer: 5
   m_Name: BT_Replay
   m_TagString: Untagged
@@ -395,6 +397,44 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 678715371}
   m_CullTransparentMesh: 0
+--- !u!114 &678715376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678715371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b955479aedc39d40921e5d6bcc4d50c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!61 &678715377
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678715371}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 320, y: 180}
+  m_EdgeRadius: 0
 --- !u!1 &681828016
 GameObject:
   m_ObjectHideFlags: 0
@@ -742,15 +782,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IndexOfSceneToMoveTo: 1
   BarRiseAnimationTime: 0.7
-  PlayerColours:
-  - {r: 1, g: 0.4117647, b: 0.4117647, a: 1}
-  - {r: 0.5803922, g: 0.6862745, b: 1, a: 1}
-  - {r: 0.3372549, g: 0.8156863, b: 0.3019608, a: 1}
-  - {r: 0.93333334, g: 0.9411765, b: 0.31764707, a: 1}
-  - {r: 0.8235294, g: 0.31764707, b: 0.9411765, a: 1}
-  - {r: 0.31764707, g: 0.9411765, b: 0.74509805, a: 1}
-  - {r: 0.9411765, g: 0.6862745, b: 0.31764707, a: 1}
-  - {r: 1, g: 0.627451, b: 0.8039216, a: 1}
   P_Scoring: {fileID: 1320486354}
   ReplayButton: {fileID: 678715371}
   ScoreBarBase: {fileID: 6140014301618755163, guid: c25258cc46c62624caa315c217e082ee,
@@ -927,7 +958,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 5cbbd8578fb07234e86d23bc8a897580, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -1135,3 +1166,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WinSound: {fileID: 2071609795}
+  ScoreSound: {fileID: 2071609793}
