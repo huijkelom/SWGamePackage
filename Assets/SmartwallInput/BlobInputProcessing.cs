@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public enum InputTypes { Raycast2D, Raycast3D}
+public enum InputTypes { Raycast2D, Raycast3D, Both}
 
 /// <summary>
 /// This class take the Blob data and translates it to interaction. The class will use a cylinder cast / overlap circle
@@ -95,70 +95,63 @@ public class BlobInputProcessing : MonoBehaviour
         switch (InputType)
         {
             case InputTypes.Raycast3D:
-                Ray ray = Camera.main.ScreenPointToRay(new Vector3(screenPosition.x * Screen.width, screenPosition.y * Screen.height, 0f));
-                Debug.DrawRay(ray.origin, ray.direction);
-                if (AccountForBallSize)
-                {
-                    RaycastHit[] hits = Physics.CapsuleCastAll(ray.origin, ray.origin + ray.direction, size * Screen.width, ray.direction);
-                    foreach(RaycastHit hit in hits)
-                    {
-                        foreach (I_SmartwallInteractable script in hit.transform.gameObject.GetComponents<I_SmartwallInteractable>())
-                        {
-                            script.Hit(hit.point);
-                        }
-                    }
-                }
-                else
-                {
-                    RaycastHit hit = new RaycastHit();
-                    if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity))
-                    {
-                        foreach (I_SmartwallInteractable script in hit.transform.gameObject.GetComponents<I_SmartwallInteractable>())
-                        {
-                            script.Hit(hit.point);
-                        }
-                    }
-                }
+                Detect3D(screenPosition, size);
                 break;
             case InputTypes.Raycast2D:
-                Vector2 point = Camera.main.ScreenToWorldPoint(new Vector3(screenPosition.x * Screen.width, screenPosition.y * Screen.height, Camera.main.nearClipPlane));
-                Debug.DrawRay(new Vector3(point.x, point.y, 0f), Vector3.forward, Color.red);
-                List<Collider2D> hits2D = new List<Collider2D>();
-                if (AccountForBallSize)
-                {
-                    hits2D.AddRange(Physics2D.OverlapCircleAll(point, size * Screen.width));
-                }
-                else
-                {
-                    hits2D.AddRange(Physics2D.OverlapPointAll(point));
-                }
-                foreach (Collider2D hit2D in hits2D)
-                {
-                    foreach (I_SmartwallInteractable script in hit2D.transform.gameObject.GetComponents<I_SmartwallInteractable>())
-                    {
-                        script.Hit(new Vector3(point.x, point.y, 0f));
-                    }
-                }
+                Detect2D(screenPosition, size);
                 break;
-            //case InputTypes.Physical:
-            //    if (Ball == null)
-            //    {
-            //        Debug.LogError("BlobInputProcessing | InteractInput | Missing throwable object. Please link the default 'ball' provided in the package.");
-            //        return;
-            //    }
-            //    Ray ray2 = Camera.main.ScreenPointToRay(new Vector3(screenPosition.x, screenPosition.y, 0f));
-            //    GameObject ball = Instantiate(Ball, ray2.origin, Quaternion.identity);
-            //    ball.transform.localScale = new Vector3(size * Screen.width, size * Screen.width, size * Screen.width);
-            //    try
-            //    {
-            //        ball.GetComponent<Rigidbody>().AddForce(ray2.direction * Force, ForceMode.Impulse);
-            //    }
-            //    catch (NullReferenceException nREx)
-            //    {
-            //        Debug.LogError("BlobInputProcessing | InteractInput | You have changed the throw object but the new object is missing a Rigidbody!");
-            //    }
-            //    break;
+            case InputTypes.Both:
+                Detect3D(screenPosition, size);
+                Detect2D(screenPosition, size);
+                break;
         }
-
+    }
+    public void Detect3D(Vector2 screenPosition, float size)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(new Vector3(screenPosition.x * Screen.width, screenPosition.y * Screen.height, 0f));
+        Debug.DrawRay(ray.origin, ray.direction);
+        if (AccountForBallSize)
+        {
+            RaycastHit[] hits = Physics.CapsuleCastAll(ray.origin, ray.origin + ray.direction, size * Screen.width, ray.direction);
+            foreach (RaycastHit hit in hits)
+            {
+                foreach (I_SmartwallInteractable script in hit.transform.gameObject.GetComponents<I_SmartwallInteractable>())
+                {
+                    script.Hit(hit.point);
+                }
+            }
+        }
+        else
+        {
+            RaycastHit hit = new RaycastHit();
+            if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity))
+            {
+                foreach (I_SmartwallInteractable script in hit.transform.gameObject.GetComponents<I_SmartwallInteractable>())
+                {
+                    script.Hit(hit.point);
+                }
+            }
+        }
+    }
+    public void Detect2D(Vector2 screenPosition, float size)
+    {
+        Vector2 point = Camera.main.ScreenToWorldPoint(new Vector3(screenPosition.x * Screen.width, screenPosition.y * Screen.height, Camera.main.nearClipPlane));
+        Debug.DrawRay(new Vector3(point.x, point.y, 0f), Vector3.forward, Color.red);
+        List<Collider2D> hits2D = new List<Collider2D>();
+        if (AccountForBallSize)
+        {
+            hits2D.AddRange(Physics2D.OverlapCircleAll(point, size * Screen.width));
+        }
+        else
+        {
+            hits2D.AddRange(Physics2D.OverlapPointAll(point));
+        }
+        foreach (Collider2D hit2D in hits2D)
+        {
+            foreach (I_SmartwallInteractable script in hit2D.transform.gameObject.GetComponents<I_SmartwallInteractable>())
+            {
+                script.Hit(new Vector3(point.x, point.y, 0f));
+            }
+        }
     }
 }

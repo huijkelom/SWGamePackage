@@ -13,8 +13,7 @@ public class SWButton : MonoBehaviour, I_SmartwallInteractable
     {
         _ButtonImOn = gameObject.GetComponent<Button>();
     }
-
-    // Start is called before the first frame update
+    
     public void Hit(Vector3 location)
     {
         _ButtonImOn.onClick.Invoke();

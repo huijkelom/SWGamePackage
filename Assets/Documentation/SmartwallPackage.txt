@@ -1,7 +1,7 @@
 Setup
 
-First you will want to setup a initialisation scene, in this scene you place the given gamemanager object.
-At the game manager you can set how you want the detection to funtion, 2d/3d etc. If you want to use 2D and 3D
+First you will want to setup a initialisation scene, in this scene you place the given gamemaster object.
+At the game master you can set how you want the detection to funtion, 2d/3d etc. If you want to use 2D and 3D
 you can add a second input processing class. The colour ID of each player can also be set here more info on 
 this in the Util section bellow. Lastly you will want to add something to this scene so it move on to your starting scene.
 
@@ -65,4 +65,4 @@ There are several Utilities included in the package:
  - XML_to_Class: provided static methods for loading and saving classes to/from XML files. Remeber that only public variables 
    are persisted.
  - PlayerColourContainer: This class offers a static method, GetPlayerColour(int playerNumber), for getting the color ID of a 
-   player. The colours can be changed at the game manager object.
+   player. The colours can be changed at the game master object.
