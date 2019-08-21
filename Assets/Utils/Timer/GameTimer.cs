@@ -18,11 +18,22 @@ public class GameTimer : MonoBehaviour
     private bool Paused = false;
     public UnityEvent TimerRanOut = new UnityEvent();
 
+    /// <summary>
+    /// Start running the set timer.
+    /// </summary>
     public void StartTimer()
     {
         _StartTime = Time.time;
         LabelOfTimer.color = _ColourStart;
         StartCoroutine("RunTimer");
+    }
+
+    /// <summary>
+    /// Pause or unpause the timer.
+    /// </summary>
+    public void PauseTimer(bool pause)
+    {
+        Paused = pause;
     }
 
     void Awake()
