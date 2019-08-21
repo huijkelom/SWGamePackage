@@ -119,7 +119,7 @@ public class ScoreScreenController : MonoBehaviour
         temp.Begin(Scores[0], (float)Scores[0] / (float)highestScore, BarRiseAnimationTime, Scores[0] > Highscore, Scores[0] > Highscore, 0.1f);
 
         temp = Instantiate(ScoreBarBase, P_Scoring.transform).GetComponent<ScoreBar>();
-        temp.SetNewBarColour(Color.black);
+        temp.SetNewBarColour(PlayerColourContainer.GetPlayerColour(0));
         temp.Begin(Highscore, (float)Highscore / (float)highestScore, BarRiseAnimationTime, false, false, 0.1f);
     }
 
