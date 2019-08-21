@@ -34,7 +34,7 @@ public class GlobalGameSettings : MonoBehaviour
             {
                 return temp.Value;
             }
-            Debug.LogWarning("GlobalGameSettings | GetSetting | No setting by that name was found.");
+            Debug.LogWarning("GlobalGameSettings | GetSetting | No setting by that name was found: " + nameOfSetting);
         }
         return string.Empty;
     }

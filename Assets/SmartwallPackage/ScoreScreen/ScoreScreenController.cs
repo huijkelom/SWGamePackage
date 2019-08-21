@@ -11,6 +11,7 @@ public class HighscoreContainer
     {
         Highscore = score;
     }
+    public HighscoreContainer() { }
 }
 
 /// <summary>
