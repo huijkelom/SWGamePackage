@@ -236,10 +236,10 @@ public static class XML_to_Class
         {
             throw new ArgumentException("XML_to_Class | SaveClassToXML | folder has an extention. please use the overload method if you wish to use a full file path.");
         }
-        if (!Directory.Exists(folder))
+        if (!Directory.Exists(Application.dataPath + Path.DirectorySeparatorChar + folder))
         {
             Debug.LogWarning("XML_to_Class | SaveClassToXML | Saving class to a folder that doesn't exsist, folder will be created.");
-            Directory.CreateDirectory(folder);
+            Directory.CreateDirectory(Application.dataPath + Path.DirectorySeparatorChar + folder);
         }
 
         //Turn relative path into the absolute path

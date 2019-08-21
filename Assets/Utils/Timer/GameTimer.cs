@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -14,14 +15,14 @@ public class GameTimer : MonoBehaviour
     public float PercentageOutOfTime = 15;
     private float _StartTime;
     private Color _ColourStart;
-    private bool Started = false;
+    private bool Paused = false;
     public UnityEvent TimerRanOut = new UnityEvent();
 
     public void StartTimer()
     {
-        Started = true;
         _StartTime = Time.time;
         LabelOfTimer.color = _ColourStart;
+        StartCoroutine("RunTimer");
     }
 
     void Awake()
@@ -46,34 +47,38 @@ public class GameTimer : MonoBehaviour
     private void Start()
     {
         //load time setting from settings file, if there is not Time setting in the file the inspector value is used.
-        string[] temp = GlobalGameSettings.GetSetting("Time").Split(':');
+        string[] temp = GlobalGameSettings.GetSetting("Playtime").Split(' ');
         if (temp.Length > 0)
         {
-            TimeLimit = int.Parse(temp[0]) * 60 + int.Parse(temp[1]);
+            TimeLimit = int.Parse(temp[0]);
         }
     }
 
-    void Update()
+    IEnumerator RunTimer()
     {
         float t = TimeLimit;
-        if (Started)
+        while (t <= 0)
         {
-            t -= (Time.time - _StartTime);
-        }
-        if (t <= 0)
-        {
-            TimerRanOut.Invoke();
-            t = 0;
-        }
-        int minutes = (int)(t / 60);
-        int seconds = (int)(t % 60);
-        Gage.fillAmount = t / TimeLimit;
+            if (!Paused)
+            {
+                t -= (Time.time - _StartTime);
+            }
+            if(t <= 0)
+            {
+                TimerRanOut.Invoke();
+                t = 0;
+            }
+            int minutes = (int)(t / 60);
+            int seconds = (int)(t % 60);
+            Gage.fillAmount = t / TimeLimit;
 
-        LabelOfTimer.text = minutes.ToString("D2") + ":" + seconds.ToString("D2");
-        if (t < (TimeLimit / PercentageOutOfTime))
-        {
-            float factor = t / PercentageOutOfTime;
-            LabelOfTimer.color = Color.Lerp(ColorWhenOutOfTime, _ColourStart, factor);
+            LabelOfTimer.text = minutes.ToString("D2") + ":" + seconds.ToString("D2");
+            if (t < (TimeLimit / PercentageOutOfTime))
+            {
+                float factor = t / PercentageOutOfTime;
+                LabelOfTimer.color = Color.Lerp(ColorWhenOutOfTime, _ColourStart, factor);
+            }
+            yield return null;
         }
     }
 }

@@ -56,6 +56,13 @@ public class GlobalGameSettings : MonoBehaviour
     
     public void CreateSettingFile()
     {
-        XML_to_Class.SaveClassToXML(SettingToMake, "StreamingAssets" + Path.DirectorySeparatorChar + "SavedData" + Path.DirectorySeparatorChar + "GlobalGameSettings.xml");
+        if(XML_to_Class.SaveClassToXML(SettingToMake, "StreamingAssets" + Path.DirectorySeparatorChar + "SavedData" + Path.DirectorySeparatorChar + "GlobalGameSettings.xml"))
+        {
+            Debug.Log("Settings file created.");
+        }
+        else
+        {
+            Debug.LogError("Failed to make settings file.");
+        }
     }
 }
