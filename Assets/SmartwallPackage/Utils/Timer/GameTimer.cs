@@ -68,11 +68,11 @@ public class GameTimer : MonoBehaviour
     IEnumerator RunTimer()
     {
         float t = TimeLimit;
-        while (t <= 0)
+        while (t > 0)
         {
             if (!Paused)
             {
-                t -= (Time.time - _StartTime);
+                t -= Time.deltaTime;
             }
             if(t <= 0)
             {
