@@ -5,6 +5,9 @@ using UnityEngine;
 public class MainThreadDispatcher : MonoBehaviour
 {
     private static MainThreadDispatcher _Instance;
+    /// <summary>
+    /// Get the instance of the dispatcher, throws a generic exception is no instance exsists.
+    /// </summary>
     public static MainThreadDispatcher Instance { get { if (_Instance != null) { return _Instance; } else { throw new Exception("MainThreadDispatcher | Instance | Atempted use of MainThreaDispatcher with no instance present in scene, please make sure a MainThreadDispatcher is availible."); } } }
 
     private static Queue<Action> actionQueue = new Queue<Action>();
@@ -47,4 +50,9 @@ public class MainThreadDispatcher : MonoBehaviour
             actionQueue.Enqueue(action);
         }
     }
+
+    /// <summary>
+    /// Method exsists soley to see if an instance exists, an exception is thrown if it does not.
+    /// </summary>
+    public void Ping() { }
 }

@@ -26,32 +26,30 @@ public class ScoreScreenController : MonoBehaviour
     public static int Highscore { get { return _Highscore; } }
     private static int _Highscore = 0;
 
-    public int IndexOfSceneToMoveTo = 1;
+    public static int IndexOfSceneToMoveTo = 1;
     [HideInInspector]
     public float BarRiseAnimationTime = 0.7f;
     public GameObject P_Scoring;
     public GameObject ReplayButton;
     public GameObject ScoreBarBase;
-
-    /// <summary>
-    /// Moves to the scores scene to display the final scores and declare a winner and/or new highscore.
-    /// Please set in the scene if you wish to use the continue or replay arrow on the button and set what
-    /// scen should be loaded on pressing the button. There is an overload method to specify a scene on a 
-    /// per invoke basis.
-    /// </summary>
-    /// <param name="scores"></param>
-    public static void MoveToScores(List<int> scores)
-    {
-        Scores = scores;
-        SceneManager.LoadScene("Scores");
-    }
+    
     /// <summary>
     /// Moves to the scores scene to display the final scores and declare a winner and/or new highscore.
     /// Please set in the scene if you wish to use the continue or replay arrow on the button. The sceneIndex
     /// parameter is for determining what scen to move to after the scores have been shown.
     /// </summary>
-    public static void MoveToScores(List<int> scores, int sceneIndex)
+    /// <param name="sceneIndex">Scene to move to from score scene, defaults to one.</param>
+    public static void MoveToScores(List<int> scores, int sceneIndex = 1)
     {
+        if (scores == null)
+        {
+            Debug.LogError("ScoreScreenController | MoveToScores | No scores have been stored in the scores list!");
+        }
+        else if (scores.Count == 0)
+        {
+            Debug.LogError("ScoreScreenController | MoveToScores | No scores have been stored in the scores list!");
+        }
+        IndexOfSceneToMoveTo = sceneIndex;
         Scores = scores;
         SceneManager.LoadScene("Scores");
     }
