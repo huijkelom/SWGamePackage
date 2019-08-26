@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class DevSwitchToInitialization : MonoBehaviour
 {
-    private void Start()
+    private void Awake()
     {
         try { MainThreadDispatcher.Instance.Ping(); }
         catch(Exception ex)
