@@ -62,6 +62,13 @@ public class ScoreScreenController : MonoBehaviour
         {
             LoadHighscore();
         }
+        else if(GlobalGameSettings.GetSetting("Reset Highscore").Equals(string.Empty))
+        {
+            if (GlobalGameSettings.GetSetting("Reset HS").Equals("No"))
+            {
+                LoadHighscore();
+            }
+        }
 
         //check if we have all requirements linked
         if(ScoreBarBase == null) { Debug.LogError("ScoreScreenController | Start | Missing base object for score bars."); }
