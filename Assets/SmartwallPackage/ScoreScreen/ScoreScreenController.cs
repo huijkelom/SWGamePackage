@@ -83,19 +83,19 @@ public class ScoreScreenController : MonoBehaviour
         {
             int numberOf0Scores = 0;
             int highestScore = 0;
-            foreach(int score in Scores)
+            foreach (int score in Scores)
             {
-                if(score == 0) { numberOf0Scores++; }
-                if(score > highestScore) { highestScore = score; }
+                if (score == 0) { numberOf0Scores++; }
+                if (score > highestScore) { highestScore = score; }
             }
-            if(Scores.Count == 0)
+            if (Scores.Count == 0)
             {
                 Debug.LogError("ScoreScreenController | Start | No scores have been stored in the static Scores list!");
                 return;
             }
             else if(Scores.Count - numberOf0Scores == 1)
             {
-                SetupSinglePlayer();
+                SetupSinglePlayer(Scores.IndexOf(highestScore));
             }
             else if (Scores.Count - numberOf0Scores > 1)
             {
@@ -110,20 +110,20 @@ public class ScoreScreenController : MonoBehaviour
         Invoke("EnableReplay", BarRiseAnimationTime + 1f);
     }
 
-    private void SetupSinglePlayer()
+    private void SetupSinglePlayer(int playerNr)
     {
         int highestScore;
-        if(Scores[0] > Highscore)
+        if(Scores[playerNr] > Highscore)
         {
-            highestScore = Scores[0];
+            highestScore = Scores[playerNr];
         }
         else
         {
             highestScore = Highscore;
         }
         ScoreBar temp = Instantiate(ScoreBarBase, P_Scoring.transform).GetComponent<ScoreBar>();
-        temp.SetNewBarColour(PlayerColourContainer.GetPlayerColour(1));
-        temp.Begin(Scores[0], (float)Scores[0] / (float)highestScore, BarRiseAnimationTime, Scores[0] > Highscore, Scores[0] > Highscore, 0.1f);
+        temp.SetNewBarColour(PlayerColourContainer.GetPlayerColour(playerNr+1));
+        temp.Begin(Scores[playerNr], (float)Scores[playerNr] / (float)highestScore, BarRiseAnimationTime, Scores[playerNr] > Highscore, Scores[playerNr] > Highscore, 0.1f);
 
         temp = Instantiate(ScoreBarBase, P_Scoring.transform).GetComponent<ScoreBar>();
         temp.SetNewBarColour(PlayerColourContainer.GetPlayerColour(0));
