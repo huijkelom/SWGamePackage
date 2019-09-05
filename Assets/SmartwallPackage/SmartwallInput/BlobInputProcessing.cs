@@ -17,6 +17,7 @@ public class BlobInputProcessing : MonoBehaviour
     public InputTypes InputType;
     /// <summary>
     /// rather then interacting on a single point should everthing in the balls radius be hit?
+    /// This only works reliably when using orthographic cameras!
     /// </summary>
     public bool AccountForBallSize;
     public bool AverageAllInputsToOnePoint;
@@ -60,9 +61,9 @@ public class BlobInputProcessing : MonoBehaviour
                 InteractInput(b.Position, b.Width);
             }
         }
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonUp(0))
         {
-            InteractInput(new Vector2(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height), 0.1f);
+            InteractInput(new Vector2(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height), 0.05f);
         }
 
         List<Vector2> toRemove = _InteractedPoints.Where(kvp => (kvp.Value == false)).Select(kvp => kvp.Key).ToList();
@@ -111,7 +112,7 @@ public class BlobInputProcessing : MonoBehaviour
         Debug.DrawRay(ray.origin, ray.direction);
         if (AccountForBallSize)
         {
-            RaycastHit[] hits = Physics.CapsuleCastAll(ray.origin, ray.origin + ray.direction, size * Screen.width, ray.direction);
+            RaycastHit[] hits = Physics.CapsuleCastAll(ray.origin, ray.origin + ray.direction, (Camera.main.orthographicSize * 2f) * size, ray.direction);
             foreach (RaycastHit hit in hits)
             {
                 foreach (I_SmartwallInteractable script in hit.transform.gameObject.GetComponents<I_SmartwallInteractable>())
@@ -139,7 +140,7 @@ public class BlobInputProcessing : MonoBehaviour
         List<Collider2D> hits2D = new List<Collider2D>();
         if (AccountForBallSize)
         {
-            hits2D.AddRange(Physics2D.OverlapCircleAll(point, size * Screen.width));
+            hits2D.AddRange(Physics2D.OverlapCircleAll(point, (Camera.main.orthographicSize * 2f)*size));
         }
         else
         {

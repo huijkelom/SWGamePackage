@@ -26,7 +26,13 @@ public class GlobalGameSettings : MonoBehaviour
         }
         if (_Settings == null) //file was missing, use default.
         {
-            Debug.LogError("GlobalGameSettings | GetSetting | Settings File is missing! Please create one.");
+            Debug.LogWarning("GlobalGameSettings | GetSetting | Settings File is missing! Please create one. Creating default now.");
+            _Instance.CreateSettingFile();
+            _Settings = XML_to_Class.LoadClassFromXML<List<GlobalGameSetting>>("StreamingAssets" + Path.DirectorySeparatorChar + "SavedData" + Path.DirectorySeparatorChar + "GlobalGameSettings.xml");
+        }
+        if(_Settings == null)
+        {
+            Debug.LogError("GlobalGameSettings | GetSetting | Default settings file could not be made!");
         }
         else {
             GlobalGameSetting temp = FindSettingByName(nameOfSetting);
@@ -52,8 +58,14 @@ public class GlobalGameSettings : MonoBehaviour
     }
     #endregion
 
+    private static GlobalGameSettings _Instance;
     public List<GlobalGameSetting> SettingToMake = new List<GlobalGameSetting>();
-    
+
+    private void Awake()
+    {
+        _Instance = this;
+    }
+
     public void CreateSettingFile()
     {
         if(XML_to_Class.SaveClassToXML(SettingToMake, "StreamingAssets" + Path.DirectorySeparatorChar + "SavedData" + Path.DirectorySeparatorChar + "GlobalGameSettings.xml"))

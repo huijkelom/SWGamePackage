@@ -63,6 +63,9 @@ public class GameTimer : MonoBehaviour
         {
             TimeLimit = int.Parse(temp[0]);
         }
+        int minutes = (int)(TimeLimit / 60);
+        int seconds = (int)(TimeLimit % 60);
+        LabelOfTimer.text = minutes.ToString("D2") + ":" + seconds.ToString("D2");
     }
 
     IEnumerator RunTimer()

@@ -22,7 +22,7 @@ public class ScoreScreenController : MonoBehaviour
 {
     private static List<int> Scores = new List<int>();
     /// <summary>
-    /// Current highscore, publicly availible incase you want to use it for something. DOES NOT PERSIST!
+    /// Current highscore, publicly availible incase you want to use it for something.
     /// </summary>
     public static int Highscore { get { return _Highscore; } }
     private static int _Highscore = 0;
@@ -150,7 +150,15 @@ public class ScoreScreenController : MonoBehaviour
 
     private void LoadHighscore()
     {
-        _Highscore = XML_to_Class.LoadClassFromXML<HighscoreContainer>("StreamingAssets"+ Path.DirectorySeparatorChar +"HighScore").Highscore;
+        HighscoreContainer temp = XML_to_Class.LoadClassFromXML<HighscoreContainer>("StreamingAssets"+ Path.DirectorySeparatorChar +"HighScore");
+        if(temp == null)
+        {
+            _Highscore = 0;
+        }
+        else
+        {
+            _Highscore = temp.Highscore;
+        }
     }
 
     private void EnableReplay()

@@ -1,6 +1,7 @@
 ﻿#pragma warning disable 0168
 using System;
 using System.IO;
+using System.Xml;
 using System.Xml.Serialization;
 using UnityEngine;
 
@@ -114,13 +115,24 @@ public static class XML_to_Class
         }
 
         //If xml file does not exsist return null and post warning in console
-        if (!File.Exists(absoluteFilePath)) { Debug.LogWarning("XML_to_Class | LoadClassFromXML(OutsideData) | Atempted to load non-exsistant XML file: " + absoluteFilePath); return default(T); }
+        if (!File.Exists(absoluteFilePath)) { Debug.LogWarning("XML_to_Class | LoadClassFromXML(OutsideData) | Atempted to load non-exsistant XML file: " + absoluteFilePath); return default; }
 
         //Actual loading of the file
         XmlSerializer s = XmlSerializer.FromTypes(new[] { typeof(T) })[0];
         FileStream stream = new FileStream(absoluteFilePath, FileMode.Open, FileAccess.Read);
-        T temp = (T)s.Deserialize(stream);
-        stream.Dispose();
+        T temp;
+        try
+        {
+            temp = (T)s.Deserialize(stream);
+            stream.Dispose();
+        }
+        catch (Exception XEx)
+        {
+            Debug.LogError("XML file corrupted: " + Path.GetFileName(absoluteFilePath));
+            stream.Dispose();
+            File.Delete(absoluteFilePath);
+            temp = default;
+        }
         return temp;
     }
 
