@@ -59,7 +59,7 @@ public class GameTimer : MonoBehaviour
     {
         //load time setting from settings file, if there is not Time setting in the file the inspector value is used.
         string[] temp = GlobalGameSettings.GetSetting("Playtime").Split(' ');
-        if (temp.Length > 0)
+        if (temp.Length > 1)
         {
             TimeLimit = int.Parse(temp[0]);
         }

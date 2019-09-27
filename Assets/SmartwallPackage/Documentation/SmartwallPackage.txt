@@ -9,6 +9,9 @@ A score screen is also provided with the package, to set this up open the score 
 the C_UIRoot. On the C_UIRoot there is a class "ScoreScreenControll" here you can set the index of the scene the score screen
 should move to when people hit "Replay". This defaults to 1 (initialisation scene is assumed to be 0).
 
+In order for UI elements to respond to the smartwall input the canvas they belong to must be set to rendermode "screenspace - camera"
+and linked to the main camera.
+
 
 Smartwall Input
 
