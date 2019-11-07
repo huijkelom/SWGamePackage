@@ -112,7 +112,7 @@ public class BlobInputProcessing : MonoBehaviour
         Debug.DrawRay(ray.origin, ray.direction);
         if (AccountForBallSize)
         {
-            RaycastHit[] hits = Physics.CapsuleCastAll(ray.origin, ray.origin + ray.direction, (Camera.main.orthographicSize * 2f) * size, ray.direction);
+            RaycastHit[] hits = Physics.CapsuleCastAll(ray.origin, ray.origin + ray.direction, (size * Screen.width) * (Camera.main.orthographicSize / (float)Screen.height), ray.direction);
             foreach (RaycastHit hit in hits)
             {
                 foreach (I_SmartwallInteractable script in hit.transform.gameObject.GetComponents<I_SmartwallInteractable>())
