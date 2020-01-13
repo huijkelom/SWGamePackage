@@ -1,32 +1,37 @@
 Setup
 
 First you will want to setup a initialisation scene, in this scene you place the given gamemaster object.
-At the game master you can set how you want the detection to funtion, 2d/3d etc. If you want to use 2D and 3D
-you can add a second input processing class. The colour ID of each player can also be set here more info on 
-this in the Util section bellow. Lastly you will want to add something to this scene so it move on to your starting scene.
+At the game master you can set how you want the detection to funtion, 2d/3d etc. The colour ID of each player can also be 
+set here more info on this in the Util section bellow. Lastly you will want to add something to this scene so it move on 
+to your starting scene.
 
 A score screen is also provided with the package, to set this up open the score screen scene. Set the background image in
-the C_UIRoot. On the C_UIRoot there is a class "ScoreScreenControll" here you can set the index of the scene the score screen
-should move to when people hit "Replay". This defaults to 1 (initialisation scene is assumed to be 0).
+the C_UIRoot. On the C_UIRoot there is a class "ScoreScreenControll" here you can set the index of the scene the score 
+screen should move to when people hit "Replay". This defaults to 1 (initialisation scene is assumed to be 0).
 
-In order for UI elements to respond to the smartwall input the canvas they belong to must be set to rendermode "screenspace - camera"
-and linked to the main camera.
+In order for UI elements to respond to the smartwall input the canvas they belong to must be set to rendermode 
+"screenspace - camera" and linked to the main camera.
+
+All games start with a standard intro splash screen, the background is set to a preview image of the game and the 
+Smartwall logo is shown with the unity logo below it. This can all be set in the player settings of the project, 
+onder "splash image", Smartwall logo is provided in the package 
+
 
 
 Smartwall Input
 
 The provided classes on the game manager wil process the input from the smartwall software and will trigger object in 
 accordance with their settings. 
- - Input Type : weither 2D or 3D detection should be used (you can add another input processing if you want ot use both)
- - Account For ball size : When this is turned off the system will detect hits at a single point in the center of the detected 
-   object. When turned on the hit detection will detect in the whole area that the object covers, this means your game mite 
-   detect differently or is easyer/harder depending of the size of the ball that is used!
+ - Input Type : weither 2D, 3D or both detection types should be used (the system is based on an Orthographic camera)
+ - Account For ball size : When this is turned off the system will detect hits at a single point in the center of the 
+   detected object. When turned on the hit detection will detect in the whole area that the object covers, this means 
+   your game mite detect differently or is easyer/harder depending of the size of the ball that is used!
  - Average all inputs : When turned on detection will be done on the average location of all detected object and for the 
    average size of those objects. This means that there will only be one input per frame. 
  - Uninteractible Area Size : In percentage of screen width, the area around a detected input that will not accept inputs 
-   anymore untill the area is clear of all intput for a frame. This is to ensure that a ball does not trigger this multiple times.
-   This setting can be set 130, this would mean that where ever the object hits the wall, there will be no input accepted untill 
-   it is gone.
+   anymore untill the area is clear of all intput for a frame. This is to ensure that a ball does not trigger this 
+   multiple times. This setting can be set 130, this would mean that where ever the object hits the wall, there will be no 
+   input accepted untill it is gone.
 
 In order for an object to get triggered by the system it need to have a collider of the type that the input is set on (2D/3D).
 Once a hit is detected all scripts on the game object that implement the I_SmartwallInteractable interface will have thier 
