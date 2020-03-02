@@ -33,7 +33,7 @@ public class ScoreScreenController : MonoBehaviour
     public GameObject P_Scoring;
     public GameObject ReplayButton;
     public GameObject ScoreBarBase;
-    
+
     /// <summary>
     /// Moves to the scores scene to display the final scores and declare a winner and/or new highscore.
     /// Please set in the scene if you wish to use the continue or replay arrow on the button. The sceneIndex

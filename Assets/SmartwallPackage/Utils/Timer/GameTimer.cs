@@ -3,22 +3,24 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(AudioSource), typeof(Image))]
 public class GameTimer : MonoBehaviour
 {
-    public Text LabelOfTimer;
-    public Image Gage;
-    /// <summary>
-    /// Time limit can be overwritten by the setting file if it contains a setting from Time.
-    /// </summary>
+    [Tooltip("Time limit can be overwritten by the setting file if it contains a setting from Time.")]
     public float TimeLimit;
 
-    [Tooltip("The amount of seconds when the timer needs to execute certain behaviours")]
+    [Space]
+    public Text LabelOfTimer;
+    public Image Gage;
+
+    [Space][Tooltip("The amount of seconds when the timer needs to execute certain behaviours.")]
     public int AlmostFinishedTime = 5;
     public Color AlmostFinishedColor;
 
-    [Space(10)]
+    [Space]
+    public Image _FinishedFade;
     public UnityEvent TimerRanOut = new UnityEvent();
+
     private AudioSource _AlmostFinishedAudio;
     private AudioSource _FinishedAudio;
 
@@ -114,6 +116,11 @@ public class GameTimer : MonoBehaviour
         }
 
         t = 0;
+
+        Color c = _FinishedFade.color;
+        c.a = 0.5f;
+        _FinishedFade.color = c;
+
         _FinishedAudio.Play();
         yield return new WaitForSeconds(2);
         TimerRanOut.Invoke();
