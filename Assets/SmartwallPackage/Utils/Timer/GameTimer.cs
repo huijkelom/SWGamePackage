@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(AudioSource))]
 public class GameTimer : MonoBehaviour
 {
     public Text LabelOfTimer;
@@ -11,18 +12,29 @@ public class GameTimer : MonoBehaviour
     /// Time limit can be overwritten by the setting file if it contains a setting from Time.
     /// </summary>
     public float TimeLimit;
-    public Color ColorWhenOutOfTime;
-    public float PercentageOutOfTime = 15;
+
+    [Tooltip("The amount of seconds when the timer needs to execute certain behaviours")]
+    public int AlmostFinishedTime = 5;
+    public Color AlmostFinishedColor;
+
+    [Space(10)]
+    public UnityEvent TimerRanOut = new UnityEvent();
+    private AudioSource _AlmostFinishedAudio;
+    private AudioSource _FinishedAudio;
+
     private float _StartTime;
     private Color _ColourStart;
     private bool Paused = false;
-    public UnityEvent TimerRanOut = new UnityEvent();
 
     /// <summary>
     /// Start running the set timer.
     /// </summary>
     public void StartTimer()
     {
+        AudioSource[] _audioSources = GetComponents<AudioSource>();
+        _AlmostFinishedAudio = _audioSources[0];
+        _FinishedAudio = _audioSources[1];
+
         _StartTime = Time.time;
         LabelOfTimer.color = _ColourStart;
         StartCoroutine("RunTimer");
@@ -71,28 +83,39 @@ public class GameTimer : MonoBehaviour
     IEnumerator RunTimer()
     {
         float t = TimeLimit;
+        float redFade = 0;
+        bool finale = false;
+
         while (t > 0)
         {
             if (!Paused)
             {
+                int minutes = (int)(t / 60);
+                int seconds = (int)(t % 60);
+                Gage.fillAmount = t / TimeLimit;
+                LabelOfTimer.text = minutes.ToString("D2") + ":" + seconds.ToString("D2");
+
+                if (t < AlmostFinishedTime)
+                {
+                    redFade += Time.deltaTime / AlmostFinishedTime;
+                    LabelOfTimer.color = Color.Lerp(_ColourStart, AlmostFinishedColor, redFade);
+
+                    if (!finale)
+                    {
+                        _AlmostFinishedAudio.Play();
+                        finale = true;
+                    }
+                }
+
                 t -= Time.deltaTime;
             }
-            if(t <= 0)
-            {
-                TimerRanOut.Invoke();
-                t = 0;
-            }
-            int minutes = (int)(t / 60);
-            int seconds = (int)(t % 60);
-            Gage.fillAmount = t / TimeLimit;
 
-            LabelOfTimer.text = minutes.ToString("D2") + ":" + seconds.ToString("D2");
-            if (t < (TimeLimit / PercentageOutOfTime))
-            {
-                float factor = t / PercentageOutOfTime;
-                LabelOfTimer.color = Color.Lerp(ColorWhenOutOfTime, _ColourStart, factor);
-            }
-            yield return null;
+            yield return null;          
         }
+
+        t = 0;
+        _FinishedAudio.Play();
+        yield return new WaitForSeconds(2);
+        TimerRanOut.Invoke();
     }
 }

@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Testing/Init.unity
+    guid: 0c8d98ebc82f23745b6b01ac2af33ef4
+  - enabled: 1
+    path: Assets/Testing/SWButtonTest.unity
+    guid: 04c155e782151b946864eac577eea869
+  - enabled: 1
     path: Assets/Testing/IntegrationTest.unity
     guid: fa985c97d88bafe4581dc3f3d493346c
   - enabled: 1

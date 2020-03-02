@@ -23,8 +23,11 @@ public class SWButton : MonoBehaviour, I_SmartwallInteractable
     
     public void Hit(Vector3 location)
     {
-        _AS?.Play();
-        _Anime?.SetTrigger(AnimationTriggerName);
         _ButtonImOn.onClick.Invoke();
+
+        if (_AS)
+            _AS.Play();
+        if (_Anime)
+            _Anime.SetTrigger(AnimationTriggerName);
     }
 }
