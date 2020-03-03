@@ -28,6 +28,11 @@ public class GameTimer : MonoBehaviour
     private Color _ColourStart;
     private bool Paused = false;
 
+    public void SetState(bool state)
+    {
+        gameObject.SetActive(state);
+    }
+
     /// <summary>
     /// Start running the set timer.
     /// </summary>
@@ -66,11 +71,9 @@ public class GameTimer : MonoBehaviour
                 Debug.LogWarning("L_Text | Start | Text changer has no label to change but it has found a Text class on its gameobject: " + gameObject.name);
             }
         }
-        _ColourStart = LabelOfTimer.color;
-    }
 
-    private void Start()
-    {
+        _ColourStart = LabelOfTimer.color;
+
         //load time setting from settings file, if there is not Time setting in the file the inspector value is used.
         string[] temp = GlobalGameSettings.GetSetting("Playtime").Split(' ');
         if (temp.Length > 1)
