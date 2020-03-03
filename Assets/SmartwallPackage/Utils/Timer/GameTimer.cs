@@ -74,12 +74,13 @@ public class GameTimer : MonoBehaviour
 
         _ColourStart = LabelOfTimer.color;
 
-        //load time setting from settings file, if there is not Time setting in the file the inspector value is used.
-        string[] temp = GlobalGameSettings.GetSetting("Playtime").Split(' ');
-        if (temp.Length > 1)
+        //load time setting from settings file; if there is no time setting in the file, the inspector value is used instead.
+        string[] setting = GlobalGameSettings.GetSetting("Playtime").Split(' ');
+        if (setting.Length > 0)
         {
-            TimeLimit = int.Parse(temp[0]);
+            TimeLimit = int.Parse(setting[0]);
         }
+
         int minutes = (int)(TimeLimit / 60);
         int seconds = (int)(TimeLimit % 60);
         LabelOfTimer.text = minutes.ToString("D2") + ":" + seconds.ToString("D2");
