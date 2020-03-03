@@ -57,6 +57,9 @@ public class ScoreScreenController : MonoBehaviour
 
     void Start()
     {
+        //turns on input processing
+        BlobInputProcessing.SetState(true);
+
         //load highscore from file
         if(GlobalGameSettings.GetSetting("Reset Highscore").Equals("No"))
         {
