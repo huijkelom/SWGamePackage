@@ -116,13 +116,14 @@ public class GameTimer : MonoBehaviour
         }
 
         t = 0;
-
         Color c = _FinishedFade.color;
         c.a = 0.5f;
         _FinishedFade.color = c;
-
         _FinishedAudio.Play();
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(0.5f);
+        //make sure the player isn't able to hit stuff anymore
+        BlobInputProcessing.SetState(false);
+        yield return new WaitForSeconds(1.5f);
         TimerRanOut.Invoke();
     }
 }

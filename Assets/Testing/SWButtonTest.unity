@@ -188,6 +188,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 643865935}
     m_Modifications:
+    - target: {fileID: 2069719210777817042, guid: 08ef5cc2b186a684e85b80d6446ecbf7,
+        type: 3}
+      propertyPath: m_Text
+      value: 00:00
+      objectReference: {fileID: 0}
     - target: {fileID: 2069719210783572554, guid: 08ef5cc2b186a684e85b80d6446ecbf7,
         type: 3}
       propertyPath: m_Name
@@ -206,7 +211,7 @@ PrefabInstance:
     - target: {fileID: 2069719210783572564, guid: 08ef5cc2b186a684e85b80d6446ecbf7,
         type: 3}
       propertyPath: TimerRanOut.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2069719210783572564, guid: 08ef5cc2b186a684e85b80d6446ecbf7,
         type: 3}
@@ -217,16 +222,17 @@ PrefabInstance:
         type: 3}
       propertyPath: TimerRanOut.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2057243252}
+      objectReference: {fileID: 11500000, guid: 6247f6586de965043bf873897016bc74,
+        type: 3}
     - target: {fileID: 2069719210783572564, guid: 08ef5cc2b186a684e85b80d6446ecbf7,
         type: 3}
       propertyPath: TimerRanOut.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: temp
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2069719210783572564, guid: 08ef5cc2b186a684e85b80d6446ecbf7,
         type: 3}
       propertyPath: TimerRanOut.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.UI.Text, UnityEngine.UI
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2069719210783572565, guid: 08ef5cc2b186a684e85b80d6446ecbf7,
         type: 3}

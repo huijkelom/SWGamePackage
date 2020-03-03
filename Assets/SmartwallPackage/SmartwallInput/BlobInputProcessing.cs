@@ -32,44 +32,57 @@ public class BlobInputProcessing : MonoBehaviour
 
     private Dictionary<Vector2,bool> _InteractedPoints = new Dictionary<Vector2, bool>();
 
-    //Every frame we check for blob and mouse input
+    /// <summary>
+    /// Wether the game is allowed to process inputs.
+    /// </summary>
+    private static bool Active = true;
+
+    /// <summary>
+    /// Checks for blob and mouse input every physics update
+    /// </summary>
     private void FixedUpdate()
     {
-        List<Vector2> temp = _InteractedPoints.Keys.ToList();
-        for(int i = 0; i<temp.Count;i++)
+        if (Active)
         {
-            _InteractedPoints[temp[i]] = false;
-        }
-        if (AverageAllInputsToOnePoint)
-        {
-            if (BlobDetectionGateway.Blobs.Count > 0)
+            List<Vector2> temp = _InteractedPoints.Keys.ToList();
+            for (int i = 0; i < temp.Count; i++)
             {
-                Vector2 total = new Vector2();
-                float totalSize = 0;
+                _InteractedPoints[temp[i]] = false;
+            }
+
+            if (AverageAllInputsToOnePoint)
+            {
+                if (BlobDetectionGateway.Blobs.Count > 0)
+                {
+                    Vector2 total = new Vector2();
+                    float totalSize = 0;
+                    foreach (Blob b in BlobDetectionGateway.Blobs)
+                    {
+                        total += b.Position;
+                        totalSize += b.Width;
+                    }
+
+                    InteractInput(total / BlobDetectionGateway.Blobs.Count, totalSize / BlobDetectionGateway.Blobs.Count);
+                }
+            }
+            else
+            {
                 foreach (Blob b in BlobDetectionGateway.Blobs)
                 {
-                    total += b.Position;
-                    totalSize += b.Width;
+                    InteractInput(b.Position, b.Width);
                 }
-                InteractInput(total / BlobDetectionGateway.Blobs.Count, totalSize / BlobDetectionGateway.Blobs.Count);
             }
-        }
-        else
-        {
-            foreach (Blob b in BlobDetectionGateway.Blobs)
-            {
-                InteractInput(b.Position, b.Width);
-            }
-        }
-        if (Input.GetMouseButtonUp(0))
-        {
-            InteractInput(new Vector2(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height), 0.05f);
-        }
 
-        List<Vector2> toRemove = _InteractedPoints.Where(kvp => (kvp.Value == false)).Select(kvp => kvp.Key).ToList();
-        foreach (Vector2 theKey in toRemove)
-        {
-            _InteractedPoints.Remove(theKey);
+            if (Input.GetMouseButtonUp(0))
+            {
+                InteractInput(new Vector2(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height), 0.05f);
+            }
+
+            List<Vector2> toRemove = _InteractedPoints.Where(kvp => (kvp.Value == false)).Select(kvp => kvp.Key).ToList();
+            foreach (Vector2 theKey in toRemove)
+            {
+                _InteractedPoints.Remove(theKey);
+            }
         }
     }
 
@@ -153,5 +166,10 @@ public class BlobInputProcessing : MonoBehaviour
                 script.Hit(new Vector3(point.x, point.y, 0f));
             }
         }
+    }
+
+    public static void SetState(bool state)
+    {
+        Active = state;
     }
 }
