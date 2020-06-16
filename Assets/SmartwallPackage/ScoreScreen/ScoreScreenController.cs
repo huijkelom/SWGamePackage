@@ -6,10 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class HighscoreContainer
 {
-    public int Highscore;
-    public HighscoreContainer(int score)
+    public List<int> Highscores;
+    public HighscoreContainer(List<int> scores)
     {
-        Highscore = score;
+        Highscores = scores;
     }
     public HighscoreContainer() { }
 }
@@ -24,10 +24,11 @@ public class ScoreScreenController : MonoBehaviour
     /// <summary>
     /// Current highscore, publicly availible incase you want to use it for something.
     /// </summary>
-    public static int Highscore { get { return _Highscore; } }
-    private static int _Highscore = 0;
+    public static int GetHighscore(int levelIndex) { return _Highscore.Highscores[levelIndex]; } 
+    private static HighscoreContainer _Highscore;
 
     public static int IndexOfSceneToMoveTo = 1;
+    private static int _LevelIndex = 0;
     [HideInInspector]
     public float BarRiseAnimationTime = 0.7f;
     public GameObject P_Scoring;
@@ -40,7 +41,7 @@ public class ScoreScreenController : MonoBehaviour
     /// parameter is for determining what scen to move to after the scores have been shown.
     /// </summary>
     /// <param name="sceneIndex">Scene to move to from score scene, defaults to one.</param>
-    public static void MoveToScores(List<int> scores, int sceneIndex = 1)
+    public static void MoveToScores(List<int> scores,int levelIndex = 0, int sceneIndex = 1)
     {
         if (scores == null)
         {
@@ -52,6 +53,7 @@ public class ScoreScreenController : MonoBehaviour
         }
         IndexOfSceneToMoveTo = sceneIndex;
         Scores = scores;
+        _LevelIndex = levelIndex;
         SceneManager.LoadScene("Scores");
     }
 
@@ -104,9 +106,9 @@ public class ScoreScreenController : MonoBehaviour
             {
                 SetupMultiPlayer(highestScore);
             }
-            if(highestScore > Highscore)
+            if(highestScore > _Highscore.Highscores[_LevelIndex])
             {
-                _Highscore = highestScore;
+                _Highscore.Highscores[_LevelIndex] = highestScore;
                 SaveHighscore();
             }
         }
@@ -116,21 +118,21 @@ public class ScoreScreenController : MonoBehaviour
     private void SetupSinglePlayer(int playerNr)
     {
         int highestScore;
-        if(Scores[playerNr] > Highscore)
+        if(Scores[playerNr] > _Highscore.Highscores[_LevelIndex])
         {
             highestScore = Scores[playerNr];
         }
         else
         {
-            highestScore = Highscore;
+            highestScore = _Highscore.Highscores[_LevelIndex];
         }
         ScoreBar temp = Instantiate(ScoreBarBase, P_Scoring.transform).GetComponent<ScoreBar>();
         temp.SetNewBarColour(PlayerColourContainer.GetPlayerColour(playerNr+1));
-        temp.Begin(Scores[playerNr], (float)Scores[playerNr] / (float)highestScore, BarRiseAnimationTime, Scores[playerNr] > Highscore, Scores[playerNr] > Highscore, 0.1f);
+        temp.Begin(Scores[playerNr], (float)Scores[playerNr] / (float)highestScore, BarRiseAnimationTime, Scores[playerNr] > _Highscore.Highscores[_LevelIndex], Scores[playerNr] > _Highscore.Highscores[_LevelIndex], 0.1f);
 
         temp = Instantiate(ScoreBarBase, P_Scoring.transform).GetComponent<ScoreBar>();
         temp.SetNewBarColour(PlayerColourContainer.GetPlayerColour(0));
-        temp.Begin(Highscore, (float)Highscore / (float)highestScore, BarRiseAnimationTime, false, false, 0.1f);
+        temp.Begin(_Highscore.Highscores[_LevelIndex], (float)_Highscore.Highscores[_LevelIndex] / (float)highestScore, BarRiseAnimationTime, false, false, 0.1f);
     }
 
     private void SetupMultiPlayer(int highestScore)
@@ -141,14 +143,14 @@ public class ScoreScreenController : MonoBehaviour
             {
                 ScoreBar temp = Instantiate(ScoreBarBase, P_Scoring.transform).GetComponent<ScoreBar>();
                 temp.SetNewBarColour(PlayerColourContainer.GetPlayerColour(i+1));
-                temp.Begin(Scores[i], (float)Scores[i] / (float)highestScore, BarRiseAnimationTime, Scores[i] > Highscore && Scores[i] == highestScore, Scores[i] == highestScore, 0.1f);
+                temp.Begin(Scores[i], (float)Scores[i] / (float)highestScore, BarRiseAnimationTime, Scores[i] > _Highscore.Highscores[_LevelIndex] && Scores[i] == highestScore, Scores[i] == highestScore, 0.1f);
             }
         }
     }
 
     private void SaveHighscore()
     {
-        XML_to_Class.SaveClassToXML(new HighscoreContainer(Highscore), "StreamingAssets"+ Path.DirectorySeparatorChar + "HighScore");
+            XML_to_Class.SaveClassToXML(_Highscore, "StreamingAssets" + Path.DirectorySeparatorChar + "HighScore");
     }
 
     private void LoadHighscore()
@@ -156,11 +158,11 @@ public class ScoreScreenController : MonoBehaviour
         HighscoreContainer temp = XML_to_Class.LoadClassFromXML<HighscoreContainer>("StreamingAssets"+ Path.DirectorySeparatorChar +"HighScore");
         if(temp == null)
         {
-            _Highscore = 0;
+            _Highscore = new HighscoreContainer(new List<int>());
         }
         else
         {
-            _Highscore = temp.Highscore;
+            _Highscore = temp;
         }
     }
 
