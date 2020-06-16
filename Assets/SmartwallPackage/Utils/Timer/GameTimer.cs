@@ -8,6 +8,7 @@ public class GameTimer : MonoBehaviour
 {
     [Tooltip("Time limit can be overwritten by the setting file if it contains a setting from Time.")]
     public float TimeLimit;
+    public float TimeRemaining;
 
     [Space]
     public Text LabelOfTimer;
@@ -38,10 +39,21 @@ public class GameTimer : MonoBehaviour
     /// </summary>
     public void StartTimer()
     {
-        AudioSource[] _audioSources = GetComponents<AudioSource>();
-        _AlmostFinishedAudio = _audioSources[0];
-        _FinishedAudio = _audioSources[1];
+        StopCoroutine("RunTimer");
 
+        _StartTime = Time.time;
+        LabelOfTimer.color = _ColourStart;
+        StartCoroutine("RunTimer");
+    }
+
+    /// <summary>
+    /// Starts the timer with a custom time.
+    /// </summary>
+    public void StartTimer(float time)
+    {
+        StopCoroutine("RunTimer");
+
+        TimeLimit = time;
         _StartTime = Time.time;
         LabelOfTimer.color = _ColourStart;
         StartCoroutine("RunTimer");
@@ -55,7 +67,7 @@ public class GameTimer : MonoBehaviour
         Paused = pause;
     }
 
-    void Awake()
+    private void Awake()
     {
         //Check if a Text class has been linked
         if (LabelOfTimer == null)
@@ -86,22 +98,32 @@ public class GameTimer : MonoBehaviour
         LabelOfTimer.text = minutes.ToString("D2") + ":" + seconds.ToString("D2");
     }
 
+    /// <summary>
+    /// Initializes relevant audiosources.
+    /// </summary>
+    private void Start()
+    {
+        AudioSource[] _audioSources = GetComponents<AudioSource>();
+        _AlmostFinishedAudio = _audioSources[0];
+        _FinishedAudio = _audioSources[1];
+    }
+
     IEnumerator RunTimer()
     {
-        float t = TimeLimit;
+        TimeRemaining = TimeLimit;
         float redFade = 0;
         bool finale = false;
 
-        while (t > 0)
+        while (TimeRemaining > 0)
         {
             if (!Paused)
             {
-                int minutes = (int)(t / 60);
-                int seconds = (int)(t % 60);
-                Gage.fillAmount = t / TimeLimit;
+                int minutes = (int)(TimeRemaining / 60);
+                int seconds = (int)(TimeRemaining % 60);
+                Gage.fillAmount = TimeRemaining / TimeLimit;
                 LabelOfTimer.text = minutes.ToString("D2") + ":" + seconds.ToString("D2");
 
-                if (t < AlmostFinishedTime)
+                if (TimeRemaining < AlmostFinishedTime)
                 {
                     redFade += Time.deltaTime / AlmostFinishedTime;
                     LabelOfTimer.color = Color.Lerp(_ColourStart, AlmostFinishedColor, redFade);
@@ -113,13 +135,13 @@ public class GameTimer : MonoBehaviour
                     }
                 }
 
-                t -= Time.deltaTime;
+                TimeRemaining -= Time.deltaTime;
             }
 
             yield return null;          
         }
 
-        t = 0;
+        TimeRemaining = 0;
         Color c = _FinishedFade.color;
         c.a = 0.5f;
         _FinishedFade.color = c;
