@@ -93,6 +93,15 @@ public class ScoreScreenController : MonoBehaviour
                 if (score == 0) { numberOf0Scores++; }
                 if (score > highestScore) { highestScore = score; }
             }
+            //safty check, if we add a level it wount be in the highscore script
+            if (_Highscore.Highscores.Count - 1 < _LevelIndex)
+            {
+                int count = _Highscore.Highscores.Count - (_LevelIndex + 1);
+                for (int index = 0; index < count; index++)
+                {
+                    _Highscore.Highscores.Add(0);
+                }
+            }
             if (Scores.Count == 0)
             {
                 Debug.LogError("ScoreScreenController | Start | No scores have been stored in the static Scores list!");
