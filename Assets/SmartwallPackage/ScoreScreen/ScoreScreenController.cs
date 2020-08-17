@@ -24,8 +24,8 @@ public class ScoreScreenController : MonoBehaviour
     /// <summary>
     /// Current highscore, publicly availible incase you want to use it for something.
     /// </summary>
-    public static int GetHighscore(int levelIndex) { return _Highscore.Highscores[levelIndex]; } 
-    private static HighscoreContainer _Highscore;
+    public static int GetHighscore(int levelIndex) { return _Highscore.Highscores[levelIndex]; }
+    private static HighscoreContainer _Highscore = new HighscoreContainer();
 
     public static int IndexOfSceneToMoveTo = 1;
     private static int _LevelIndex = 0;
@@ -93,7 +93,7 @@ public class ScoreScreenController : MonoBehaviour
                 if (score == 0) { numberOf0Scores++; }
                 if (score > highestScore) { highestScore = score; }
             }
-            //safty check, if we add a level it wount be in the highscore script
+            //safety check, if we add a level it wount be in the highscore script
             if (_Highscore.Highscores.Count - 1 < _LevelIndex)
             {
                 int count = _Highscore.Highscores.Count - (_LevelIndex + 1);
