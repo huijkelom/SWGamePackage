@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class HighscoreContainer
 {
-    public List<int> Highscores;
+    public List<int> Highscores = new List<int>();
     public HighscoreContainer(List<int> scores)
     {
         Highscores = scores;
@@ -41,7 +41,7 @@ public class ScoreScreenController : MonoBehaviour
     /// parameter is for determining what scen to move to after the scores have been shown.
     /// </summary>
     /// <param name="sceneIndex">Scene to move to from score scene, defaults to one.</param>
-    public static void MoveToScores(List<int> scores,int levelIndex = 0, int sceneIndex = 1)
+    public static void MoveToScores(List<int> scores,int levelIndex = 1, int sceneIndex = 1)
     {
         if (scores == null)
         {
@@ -96,7 +96,7 @@ public class ScoreScreenController : MonoBehaviour
             //safety check, if we add a level it wount be in the highscore script
             if (_Highscore.Highscores.Count - 1 < _LevelIndex)
             {
-                int count = _Highscore.Highscores.Count - (_LevelIndex + 1);
+                int count = _LevelIndex + 1 - _Highscore.Highscores.Count;
                 for (int index = 0; index < count; index++)
                 {
                     _Highscore.Highscores.Add(0);
