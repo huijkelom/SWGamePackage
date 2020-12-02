@@ -29,6 +29,7 @@ public class ScoreScreenController : MonoBehaviour
 
     public static int IndexOfSceneToMoveTo = 1;
     private static int _LevelIndex = 0;
+    private static bool _Are0ScoresIgnored = true;
     [HideInInspector]
     public float BarRiseAnimationTime = 0.7f;
     public GameObject P_Scoring;
@@ -41,7 +42,7 @@ public class ScoreScreenController : MonoBehaviour
     /// parameter is for determining what scen to move to after the scores have been shown.
     /// </summary>
     /// <param name="sceneIndex">Scene to move to from score scene, defaults to one.</param>
-    public static void MoveToScores(List<int> scores,int levelIndex = 1, int sceneIndex = 1)
+    public static void MoveToScores(List<int> scores,int levelIndex = 1, int sceneIndex = 1, bool ignore0Scores = true)
     {
         if (scores == null)
         {
@@ -54,6 +55,7 @@ public class ScoreScreenController : MonoBehaviour
         IndexOfSceneToMoveTo = sceneIndex;
         Scores = scores;
         _LevelIndex = levelIndex;
+        _Are0ScoresIgnored = ignore0Scores;
         SceneManager.LoadScene("Scores");
     }
 
@@ -90,7 +92,7 @@ public class ScoreScreenController : MonoBehaviour
             int highestScore = 0;
             foreach (int score in Scores)
             {
-                if (score == 0) { numberOf0Scores++; }
+                if (score == 0 && !_Are0ScoresIgnored) { numberOf0Scores++; }
                 if (score > highestScore) { highestScore = score; }
             }
             //safety check, if we add a level it wount be in the highscore script
