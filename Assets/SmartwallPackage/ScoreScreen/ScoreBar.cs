@@ -31,7 +31,7 @@ public class ScoreBar : MonoBehaviour
         _IsWinner = isWinner;
         _HasHighscore = hasHighscore;
         _Score = score;
-        _BarFillPerc = barFillPerc;
+        _BarFillPerc = (barFillPerc*0.9f)+0.1f;
         _TimeToRaise = timeToRaiseAllInSeconds;
         if (delay == 0)
         {
