@@ -92,7 +92,7 @@ public class ScoreScreenController : MonoBehaviour
             int highestScore = 0;
             foreach (int score in Scores)
             {
-                if (score == 0 && !_Are0ScoresIgnored) { numberOf0Scores++; }
+                if (score == 0 && _Are0ScoresIgnored) { numberOf0Scores++; }
                 if (score > highestScore) { highestScore = score; }
             }
             //safety check, if we add a level it wount be in the highscore script
@@ -150,12 +150,12 @@ public class ScoreScreenController : MonoBehaviour
     {
         for(int i = 0; i < Scores.Count; i++)
         {
-            if (Scores[i] > 0)
-            {
+            if (Scores[i] > 0 && _Are0ScoresIgnored)
+            { continue; }
                 ScoreBar temp = Instantiate(ScoreBarBase, P_Scoring.transform).GetComponent<ScoreBar>();
                 temp.SetNewBarColour(PlayerColourContainer.GetPlayerColour(i+1));
                 temp.Begin(Scores[i], (float)Scores[i] / (float)highestScore, BarRiseAnimationTime, Scores[i] > _Highscore.Highscores[_LevelIndex] && Scores[i] == highestScore, Scores[i] == highestScore, 0.1f);
-            }
+            
         }
     }
 
