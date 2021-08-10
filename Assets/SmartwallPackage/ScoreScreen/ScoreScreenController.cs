@@ -150,7 +150,7 @@ public class ScoreScreenController : MonoBehaviour
     {
         for(int i = 0; i < Scores.Count; i++)
         {
-            if (Scores[i] > 0 && _Are0ScoresIgnored)
+            if (Scores[i] == 0 && _Are0ScoresIgnored)
             { continue; }
                 ScoreBar temp = Instantiate(ScoreBarBase, P_Scoring.transform).GetComponent<ScoreBar>();
                 temp.SetNewBarColour(PlayerColourContainer.GetPlayerColour(i+1));
