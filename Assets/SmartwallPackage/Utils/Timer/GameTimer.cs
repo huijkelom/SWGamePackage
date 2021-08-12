@@ -22,9 +22,9 @@ public class GameTimer : MonoBehaviour
     public Image _FinishedFade;
     public UnityEvent TimerRanOut = new UnityEvent();
 
-    private float _StartTime;
-    private Color _ColourStart;
-    private bool Paused = false;
+    protected float _StartTime;
+    protected Color _ColourStart;
+    protected bool Paused = false;
 
     public void SetState(bool state)
     {
@@ -34,7 +34,7 @@ public class GameTimer : MonoBehaviour
     /// <summary>
     /// Start running the set timer.
     /// </summary>
-    public void StartTimer()
+    public virtual void StartTimer()
     {
         StopCoroutine("RunTimer");
 
@@ -134,9 +134,11 @@ public class GameTimer : MonoBehaviour
         _FinishedFade.color = c;
         AudioManager.Instance.Play("TimeRanOut");
         yield return new WaitForSeconds(0.5f);
+
         //make sure the player isn't able to hit stuff anymore
         BlobInputProcessing.SetState(false);
         yield return new WaitForSeconds(1.5f);
+
         TimerRanOut.Invoke();
     }
 }
