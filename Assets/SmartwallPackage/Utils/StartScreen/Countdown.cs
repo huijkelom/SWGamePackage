@@ -7,11 +7,10 @@ using UnityEngine.UI;
 public class Countdown : MonoBehaviour, I_SmartwallInteractable
 {
     public List<GameObject> Numbers = new List<GameObject>();
-    public AudioSource Numberbeep;
-    public AudioSource FinishBeep;
     public Image I_HitMe;
-    bool started = false;
     public UnityEvent CountdownFinished = new UnityEvent();
+
+    private bool started = false;
 
     IEnumerator CountDown()
     {
@@ -19,14 +18,16 @@ public class Countdown : MonoBehaviour, I_SmartwallInteractable
         {
             go.SetActive(true);
             go.GetComponent<Animation>().Play();
-            Numberbeep.Play();
+            AudioManager.Instance.Play("CountdownBeep");
             yield return new WaitForSeconds(1);
             go.SetActive(false);
         }
-        FinishBeep.Play();
+      
         CountdownFinished.Invoke();
-        gameObject.GetComponent<Image>().enabled = false;
         gameObject.GetComponent<BoxCollider2D>().enabled = false;
+
+        gameObject.GetComponent<Image>().enabled = false;
+        AudioManager.Instance.Play("CountdownGo");
     }
 
     public void Hit(Vector3 hitPosition)

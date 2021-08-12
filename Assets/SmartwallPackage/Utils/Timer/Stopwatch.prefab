@@ -159,10 +159,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2069719210783572565}
   - component: {fileID: 2069719210783572566}
-  - component: {fileID: 2069719210783572564}
+  - component: {fileID: 7945389668878994277}
   - component: {fileID: 2069719210783572567}
   m_Layer: 5
-  m_Name: Timer
+  m_Name: Stopwatch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -197,7 +197,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2069719210783572554}
   m_CullTransparentMesh: 0
---- !u!114 &2069719210783572564
+--- !u!114 &7945389668878994277
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -206,7 +206,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2069719210783572554}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7ef2e41dd7b6264d97940503b1bfdda, type: 3}
+  m_Script: {fileID: 11500000, guid: 9754770000085864a828daba36b07b98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   TimeLimit: 90
