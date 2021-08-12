@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(AudioSource), typeof(Image))]
+[RequireComponent(typeof(Image))]
 public class GameTimer : MonoBehaviour
 {
     [Tooltip("Time limit can be overwritten by the setting file if it contains a setting from Time.")]
@@ -21,9 +21,6 @@ public class GameTimer : MonoBehaviour
     [Space]
     public Image _FinishedFade;
     public UnityEvent TimerRanOut = new UnityEvent();
-
-    private AudioSource _AlmostFinishedAudio;
-    private AudioSource _FinishedAudio;
 
     private float _StartTime;
     private Color _ColourStart;
@@ -98,16 +95,6 @@ public class GameTimer : MonoBehaviour
         LabelOfTimer.text = minutes.ToString("D2") + ":" + seconds.ToString("D2");
     }
 
-    /// <summary>
-    /// Initializes relevant audiosources.
-    /// </summary>
-    private void Start()
-    {
-        AudioSource[] _audioSources = GetComponents<AudioSource>();
-        _AlmostFinishedAudio = _audioSources[0];
-        _FinishedAudio = _audioSources[1];
-    }
-
     IEnumerator RunTimer()
     {
         TimeRemaining = TimeLimit;
@@ -130,7 +117,7 @@ public class GameTimer : MonoBehaviour
 
                     if (!finale)
                     {
-                        _AlmostFinishedAudio.Play();
+                        AudioManager.Instance.Play("TimeRunningOut");
                         finale = true;
                     }
                 }
@@ -145,7 +132,7 @@ public class GameTimer : MonoBehaviour
         Color c = _FinishedFade.color;
         c.a = 0.5f;
         _FinishedFade.color = c;
-        _FinishedAudio.Play();
+        AudioManager.Instance.Play("TimeRanOut");
         yield return new WaitForSeconds(0.5f);
         //make sure the player isn't able to hit stuff anymore
         BlobInputProcessing.SetState(false);
