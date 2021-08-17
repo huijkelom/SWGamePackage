@@ -64,7 +64,7 @@ public class GameTimer : MonoBehaviour
         Paused = pause;
     }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         //Check if a Text class has been linked
         if (LabelOfTimer == null)
@@ -85,7 +85,7 @@ public class GameTimer : MonoBehaviour
 
         //load time setting from settings file; if there is no time setting in the file, the inspector value is used instead.
         string[] setting = GlobalGameSettings.GetSetting("Playtime").Split(' ');
-        if (setting.Length > 0)
+        if (setting.Length > 0 && setting[0] != string.Empty)
         {
             TimeLimit = int.Parse(setting[0]);
         }

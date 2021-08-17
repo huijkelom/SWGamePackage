@@ -14,6 +14,12 @@ public class GameStopwatch : GameTimer
         Finished = true;
     }
 
+    protected override void Awake()
+    {
+        base.Awake();
+        LabelOfTimer.text = "00:00";
+    }
+
     public override void StartTimer()
     {
         _StartTime = Time.time;
