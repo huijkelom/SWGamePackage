@@ -22,6 +22,12 @@ public class Sound
         Source.clip = clip;
     }
 
+    public void SetVolume(float value)
+    {
+        Volume = value;
+        Source.volume = value;
+    }
+
     public void ApplyValues()
     {
         Source.volume = Volume;

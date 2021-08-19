@@ -225,6 +225,12 @@ public class AudioManager : MonoBehaviour
         StartCoroutine(_Play(sound, delay));
     }
 
+    public bool IsPlaying(string name)
+    {
+        Sound sound = GetSound(name);
+        return sound.Source.isPlaying;
+    }
+
     private IEnumerator _Play(Sound sound, float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -238,6 +244,15 @@ public class AudioManager : MonoBehaviour
     public void Stop(string name)
     {
         Sound sound = GetSound(name);
+        sound.Source.Stop();
+    }
+
+    /// <summary>
+    /// Stops playing the sound effect
+    /// </summary>
+    /// <param name="sound"></param>
+    public void Stop(Sound sound)
+    {
         sound.Source.Stop();
     }
 
@@ -288,6 +303,12 @@ public class AudioManager : MonoBehaviour
         sound.Volume = sound.MaxVolume * to;
 
         sound.ApplyValues();
+    }
+
+    public void SetVolume(Sound sound, float value)
+    {
+        sound.Volume = value;
+        sound.Source.volume = value;
     }
 
     /// <summary>
@@ -342,7 +363,16 @@ public class AudioManager : MonoBehaviour
             yield return null;
         }
 
-        sound.Volume = end;
+        if (end == 0)
+        {
+            Stop(sound);
+            sound.SetVolume(1);
+        }
+        else
+        {
+            sound.Volume = end;
+        }
+
         sound.ApplyValues();
     }
     //
