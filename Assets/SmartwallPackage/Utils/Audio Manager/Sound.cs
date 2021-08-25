@@ -4,7 +4,14 @@
 public class Sound
 {
     public string Name;
+
+    /// <summary>
+    /// [Deprecated] Use Clips instead.
+    /// </summary>
+    [Tooltip("[Deprecated] Use Clips instead.")]
     public AudioClip Clip;
+
+    public AudioClip[] Clips = new AudioClip[1];
     [Space]
     [Range(0, 1)] public float Volume = 1;
     [Range(0, 3)] public float Pitch = 1;
@@ -18,7 +25,7 @@ public class Sound
 
     public void SetClip(AudioClip clip)
     {
-        Clip = clip;
+        Clips[0] = clip;
         Source.clip = clip;
     }
 
