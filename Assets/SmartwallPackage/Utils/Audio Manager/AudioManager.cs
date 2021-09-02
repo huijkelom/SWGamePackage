@@ -263,11 +263,15 @@ public class AudioManager : MonoBehaviour
                 volume = _DialogueVolume;
                 break;
             default:
-                throw new System.Exception("Sound type " + original.Type + "not implemented");
+                throw new Exception("Sound type " + original.Type + "not implemented");
         }
 
         //Initialize the new sound
         InitializeSound(container, newSound, original.Type, volume);
+
+        //Because newSound gets instantiated during runtime, InitializeSound calculates the maximum volume based on the current volume, not the volume set at start, so newSound needs to copy the max volume of the original.
+        newSound.MaxVolume = original.MaxVolume;
+        SetVolume(newSound.Name, 1);
 
         //Return the unique name
         return newSound.Name;
@@ -389,15 +393,6 @@ public class AudioManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Stops playing the sound effect
-    /// </summary>
-    /// <param name="sound"></param>
-    public void Stop(Sound sound)
-    {
-        sound.Source.Stop();
-    }
-
-    /// <summary>
     /// Stops name after a certain amount of time
     /// </summary>
     public void Stop(string name, float time)
@@ -506,7 +501,7 @@ public class AudioManager : MonoBehaviour
 
         if (end == 0)
         {
-            Stop(sound);
+            sound.Source.Stop();
             sound.SetVolume(1);
         }
         else
