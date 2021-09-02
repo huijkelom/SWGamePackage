@@ -429,22 +429,16 @@ public class AudioManager : MonoBehaviour
 
     /// <summary>
     /// Sets the volume of the sound effect with the given name to a value between 0 and 1.
-    /// Calculates the new volume level based on MaxVolume (which is the level the sound is set at on start)
+    /// Calculates the new volume level based on MaxVolume (which is the level the sound is set at on start), TypeVolume (which is the volume of the sound category), and MasterVolume (which is the main volume)
     /// </summary>
     public void SetVolume(string name, float to)
     {
         Sound sound = GetSound(name);
-
+        float typeVolume = GetVolumeDial(sound.Type);
         to = Mathf.Clamp(to, 0, 1);
-        sound.Volume = sound.MaxVolume * to;
 
+        sound.Volume = MasterVolume * typeVolume * sound.MaxVolume * to;
         sound.ApplyValues();
-    }
-
-    public void SetVolume(Sound sound, float value)
-    {
-        sound.Volume = value;
-        sound.Source.volume = value;
     }
 
     /// <summary>
