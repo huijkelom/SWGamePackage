@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -43,13 +44,21 @@ public class AudioManager : MonoBehaviour
     }
 
     [Header("Sound effects")]
-    [SerializeField] private Sound[] Sounds;
+    [SerializeField] private List<Sound> Sounds;
     [Header("Music")]
-    [SerializeField] private Sound[] Music;
+    [SerializeField] private List<Sound> Music;
     [Header("Dialogue")]
-    [SerializeField] private Sound[] Dialogue;
+    [SerializeField] private List<Sound> Dialogue;
 
+    #region Private
     private bool Playing = false;
+
+    int serialNumber = 0;
+
+    private GameObject SoundContainer;
+    private GameObject MusicContainer;
+    private GameObject DialogueContainer;
+    #endregion
     #endregion
 
     #region Initialization
@@ -106,37 +115,61 @@ public class AudioManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Creates a GameObject and starts initializing an array of Sounds
     /// Initializes a list of Sounds by creating a child GameObject, creating an AudioSource for every Sound
     /// </summary>
-    private void InitializeSounds(string name, Sound[] list, SoundType type, float volume)
+    private void InitializeSounds(string name, List<Sound> list, SoundType type, float volume)
     {
+        //Create the container, and set its parent to the music manager
         GameObject container = new GameObject(name);
         container.transform.parent = transform;
 
+        //Get a reference to the container based on the SoundType
+        switch(type)
+        {
+            case SoundType.Sound:
+                SoundContainer = container;
+                break;
+            case SoundType.Music:
+                MusicContainer = container;
+                break;
+            case SoundType.Dialogue:
+                DialogueContainer = container;
+                break;
+        }
+
+        //Initialize every sound in the sound list
         foreach (Sound sound in list)
         {
-            sound.Type = type;
+            InitializeSound(container, sound, type, volume);
+        }
+    }
 
-            sound.Source = container.AddComponent<AudioSource>();
+    /// <summary>
+    /// Initializes a Sound by creating an AudioSource, setting the proper clip, and leveling the volume
+    /// </summary>
+    private void InitializeSound(GameObject container, Sound sound, SoundType type, float typeVolume)
+    {
+        sound.Type = type;
+        sound.Source = container.AddComponent<AudioSource>();
 
-            //Clip is deprecated, and will be removed in a later version. Use Clips as much as possible.
-            if (sound.Clips.Length > 0 && sound.Clips[0] != null)
-            {
-                sound.Source.clip = sound.Clips[0];
-            }
-            else
-            {
-                throw new System.Exception("AudioSource " + name + " doesn't have an AudioClip in clips. (Clip is deprecated)");
-            }
-            
-            sound.MaxVolume = sound.Volume;
-            sound.Volume = MasterVolume * volume * sound.Volume;
+        //Clip is deprecated, and will be removed in a later version. Use Clips (List) as much as possible.
+        if (sound.Clips.Length > 0 && sound.Clips[0] != null)
+        {
+            sound.Source.clip = sound.Clips[0];
+        }
+        else
+        {
+            throw new System.Exception("AudioSource " + name + " doesn't have an AudioClip in clips. (Clip is deprecated)");
+        }
 
-            sound.ApplyValues();
-            if (sound.PlayOnAwake)
-            {
-                sound.Source.Play();
-            }
+        sound.MaxVolume = sound.Volume;
+        sound.Volume = MasterVolume * typeVolume * sound.Volume;
+
+        sound.ApplyValues();
+        if (sound.PlayOnAwake)
+        {
+            sound.Source.Play();
         }
     }
     #endregion
@@ -197,6 +230,90 @@ public class AudioManager : MonoBehaviour
     #endregion
 
     /// <summary>
+    /// Creates a copy of an existing Sound
+    /// Useful if the game needs to play a sound effect multiple times and/or at once during runtime
+    /// </summary>
+    /// <returns>A string containing a unique name to play the sound effect</returns>
+    public string CreateSound(string name)
+    {
+        //Create the new sound based on the original, but with a unique name
+        Sound original = GetSound(name);
+        Sound newSound = new Sound(original, original.Name + " " + serialNumber);
+        serialNumber++;
+
+        //Get the correct options based on the SoundType of the original
+        float volume;
+        GameObject container;
+
+        switch (original.Type)
+        {
+            case SoundType.Sound:
+                container = SoundContainer;
+                Sounds.Add(newSound);
+                volume = _SoundVolume;
+                break;
+            case SoundType.Music:
+                container = MusicContainer;
+                Music.Add(newSound);
+                volume = _MusicVolume;
+                break;
+            case SoundType.Dialogue:
+                container = DialogueContainer;
+                Dialogue.Add(newSound);
+                volume = _DialogueVolume;
+                break;
+            default:
+                throw new System.Exception("Sound type " + original.Type + "not implemented");
+        }
+
+        //Initialize the new sound
+        InitializeSound(container, newSound, original.Type, volume);
+
+        //Return the unique name
+        return newSound.Name;
+    }
+
+    /// <summary>
+    /// Destroys the sound with the given name
+    /// </summary>
+    public void DestroySound(string name)
+    {
+        Sound sound = GetSound(name);
+        Destroy(sound.Source);
+
+        //Remove the sound from the correct list, based on its soundtype
+        switch (sound.Type)
+        {
+            case SoundType.Sound:
+                Sounds.Remove(sound);
+                break;
+            case SoundType.Music:
+                Music.Remove(sound);
+                break;
+            case SoundType.Dialogue:
+                Dialogue.Remove(sound);
+                break;
+            default:
+                throw new System.Exception("Sound type " + sound.Type + "not implemented");
+        }
+    }
+
+    /// <summary>
+    /// Destroys the sound with the given name after a delay
+    /// </summary>
+    public void DestroySound(string name, float delay)
+    {
+        StartCoroutine(_DestroySound(name, delay));
+    }
+
+    private IEnumerator _DestroySound(string name, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        DestroySound(name);
+    }
+    //__________________________________________________________
+
+    /// <summary>
     /// Plays a sound effect with the given name
     /// </summary>
     public void Play(string name)
@@ -234,23 +351,30 @@ public class AudioManager : MonoBehaviour
         StartCoroutine(_Play(sound, delay));
     }
 
+    private IEnumerator _Play(Sound sound, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        sound.Source.Play();
+    }
+    //___________________________________________________________________________
+
+    /// <summary>
+    /// Returns whether or not the sound with the given name is playing
+    /// </summary>
     public bool IsPlaying(string name)
     {
         Sound sound = GetSound(name);
         return sound.Source.isPlaying;
     }
 
-    private IEnumerator _Play(Sound sound, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        sound.Source.Play();
-    }
-    //
-
+    /// <summary>
+    /// Randomly plays one of the Clips of the sound with the given name
+    /// </summary>
     public void PlayRandom(string name)
     {
         Sound sound = GetSound(name);
-        int clipIndex = Random.Range(0, sound.Clips.Length);
+
+        int clipIndex = UnityEngine.Random.Range(0, sound.Clips.Length);
         sound.SetClip(sound.Clips[clipIndex]);
         sound.Source.Play();
     }
