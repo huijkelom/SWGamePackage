@@ -53,7 +53,8 @@ public class AudioManager : MonoBehaviour
     #region Private
     private bool Playing = false;
 
-    int serialNumber = 0;
+    private int serialNumber = 0;
+    private Dictionary<string, Sound> Dictionary = new Dictionary<string, Sound>();
 
     private GameObject SoundContainer;
     private GameObject MusicContainer;
@@ -150,6 +151,8 @@ public class AudioManager : MonoBehaviour
     /// </summary>
     private void InitializeSound(GameObject container, Sound sound, SoundType type, float typeVolume)
     {
+        Dictionary.Add(sound.Name, sound);
+
         sound.Type = type;
         sound.Source = container.AddComponent<AudioSource>();
 
@@ -181,32 +184,15 @@ public class AudioManager : MonoBehaviour
     /// </summary>
     private Sound GetSound(string name)
     {
-        // Loop through all 3 Sound categories
-        foreach (Sound sound in Music)
+        foreach (KeyValuePair<string, Sound> pair in Dictionary)
         {
-            if (sound.Name == name)
+            if (pair.Key == name)
             {
-                return sound;
+                return pair.Value;
             }
         }
 
-        foreach (Sound sound in Sounds)
-        {
-            if (sound.Name == name)
-            {
-                return sound;
-            }
-        }
-
-        foreach (Sound sound in Dialogue)
-        {
-            if (sound.Name == name)
-            {
-                return sound;
-            }
-        }
-
-        throw new System.Exception("Sound '" + name + "' not found. Did you spell it right?");
+        throw new Exception("Sound '" + name + "' not found. Did you spell it right?");
     }
 
     /// <summary>
@@ -282,6 +268,8 @@ public class AudioManager : MonoBehaviour
     /// </summary>
     public void DestroySound(string name)
     {
+        Dictionary.Remove(name);
+
         Sound sound = GetSound(name);
         Destroy(sound.Source);
 
@@ -318,12 +306,29 @@ public class AudioManager : MonoBehaviour
     //__________________________________________________________
 
     /// <summary>
-    /// Plays a sound effect with the given name
+    /// Plays a sound with the given name
     /// </summary>
     public void Play(string name)
     {
         Sound sound = GetSound(name);
         sound.Source.Play();
+    }
+
+    /// <summary>
+    /// Plays the sound that corresponds to the index of the names Clips list
+    /// </summary>
+    public void Play(string name, int index)
+    {
+        Sound sound = GetSound(name);
+        if (sound.Clips.Length > index)
+        {
+            sound.SetClip(sound.Clips[index]);
+            sound.Source.Play();
+        }
+        else
+        {
+            throw new Exception("Failed to play " + name + " because sound list does not have " + index + " items.");
+        }
     }
 
     /// <summary>
