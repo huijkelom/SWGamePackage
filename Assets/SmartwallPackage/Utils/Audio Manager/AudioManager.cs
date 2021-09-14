@@ -483,7 +483,7 @@ public class AudioManager : MonoBehaviour
     {
         float typeVolume = GetVolumeDial(sound.Type);     
         float start =  MasterVolume * typeVolume * sound.MaxVolume * from;
-        float end = MasterVolume * typeVolume * sound.MaxVolume* to;
+        float end = MasterVolume * typeVolume * sound.MaxVolume * to;
 
         float progress = 0;
         while (progress <= 1)
@@ -501,7 +501,7 @@ public class AudioManager : MonoBehaviour
         if (end == 0)
         {
             sound.Source.Stop();
-            sound.SetVolume(1);
+            sound.SetVolume(MasterVolume * typeVolume * sound.MaxVolume * 1);
         }
         else
         {
