@@ -4,7 +4,6 @@
 public class Sound
 {
     public string Name;
-    public AudioClip[] Clips = new AudioClip[1];
     [Space]
     [Range(0, 1)] public float Volume = 1;
     [Range(0, 3)] public float Pitch = 1;
@@ -12,15 +11,13 @@ public class Sound
     public bool Loop = false;
     public bool PlayOnAwake = false;
     [Space]
-    /// <summary>
-    /// [Deprecated] Use Clips instead.
-    /// </summary>
-    [Tooltip("[Deprecated] Use Clips instead.")]
-    public AudioClip Clip;
+    public AudioClip[] Clips = new AudioClip[1];
 
     [HideInInspector] public AudioSource Source;
     [HideInInspector] public SoundType Type;
     [HideInInspector] public float MaxVolume;
+
+    [HideInInspector] public float LastClipIndex = -1;
 
     /// <summary>
     /// Creates a copy of an existing Sound with a unique name as an identifier

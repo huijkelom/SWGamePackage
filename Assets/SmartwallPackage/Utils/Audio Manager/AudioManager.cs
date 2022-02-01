@@ -155,16 +155,7 @@ public class AudioManager : MonoBehaviour
 
         sound.Type = type;
         sound.Source = container.AddComponent<AudioSource>();
-
-        //Clip is deprecated, and will be removed in a later version. Use Clips (List) as much as possible.
-        if (sound.Clips.Length > 0 && sound.Clips[0] != null)
-        {
-            sound.Source.clip = sound.Clips[0];
-        }
-        else
-        {
-            throw new System.Exception("AudioSource " + name + " doesn't have an AudioClip in clips. (Clip is deprecated)");
-        }
+        sound.Source.clip = sound.Clips[0];
 
         sound.MaxVolume = sound.Volume;
         sound.Volume = MasterVolume * typeVolume * sound.Volume;
@@ -268,10 +259,7 @@ public class AudioManager : MonoBehaviour
     /// </summary>
     public void DestroySound(string name)
     {
-        Dictionary.Remove(name);
-
         Sound sound = GetSound(name);
-        Destroy(sound.Source);
 
         //Remove the sound from the correct list, based on its soundtype
         switch (sound.Type)
@@ -286,8 +274,11 @@ public class AudioManager : MonoBehaviour
                 Dialogue.Remove(sound);
                 break;
             default:
-                throw new System.Exception("Sound type " + sound.Type + "not implemented");
+                throw new Exception("Sound type " + sound.Type + "not implemented");
         }
+
+        Dictionary.Remove(name);
+        Destroy(sound.Source);
     }
 
     /// <summary>
@@ -383,8 +374,14 @@ public class AudioManager : MonoBehaviour
     {
         Sound sound = GetSound(name);
 
-        int clipIndex = UnityEngine.Random.Range(0, sound.Clips.Length);
-        sound.SetClip(sound.Clips[clipIndex]);
+        int random = UnityEngine.Random.Range(0, sound.Clips.Length);
+        while (random == sound.LastClipIndex)
+        {
+            random = UnityEngine.Random.Range(0, sound.Clips.Length);
+        }
+
+        sound.LastClipIndex = random;
+        sound.SetClip(sound.Clips[random]);
         sound.Source.Play();
     }
 
@@ -518,7 +515,10 @@ public class AudioManager : MonoBehaviour
     public void SetPitch(string name, float value)
     {
         Sound sound = GetSound(name);
-        sound.Source.pitch = Mathf.Clamp(value, 0, 3);
+
+        value = Mathf.Clamp(value, 0, 3);
+        sound.Pitch = value;
+        sound.Source.pitch = value;
     }
 
     /// <summary>
