@@ -3,13 +3,15 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(Collider2D))]
-public class SWButton : Button, I_SmartwallInteractable
+public class SWToggle : Toggle, I_SmartwallInteractable
 {
     private bool Cooldown = false;
 
 #if UNITY_EDITOR
-    public void Hit(Vector3 hitpos){ }
+    public void Hit(Vector3 hitpos)
+    {
+
+    }
 #endif
 
 #if !UNITY_EDITOR
