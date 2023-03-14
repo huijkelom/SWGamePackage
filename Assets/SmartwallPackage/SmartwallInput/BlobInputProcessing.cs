@@ -73,16 +73,22 @@ public class BlobInputProcessing : MonoBehaviour
                 }
             }
 
-            if (Input.GetMouseButtonUp(0))
-            {
-                InteractInput(new Vector2(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height), 0.05f);
-            }
-
             List<Vector2> toRemove = _InteractedPoints.Where(kvp => (kvp.Value == false)).Select(kvp => kvp.Key).ToList();
             foreach (Vector2 theKey in toRemove)
             {
                 _InteractedPoints.Remove(theKey);
             }
+        }
+    }
+
+    /// <summary>
+    /// Handles (debug) mouse input.
+    /// </summary>
+    private void Update()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            InteractInput(new Vector2(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height), 0.05f);
         }
     }
 
@@ -119,6 +125,7 @@ public class BlobInputProcessing : MonoBehaviour
                 break;
         }
     }
+
     public void Detect3D(Vector2 screenPosition, float size)
     {
         Ray ray = Camera.main.ScreenPointToRay(new Vector3(screenPosition.x * Screen.width, screenPosition.y * Screen.height, 0f));
@@ -146,6 +153,7 @@ public class BlobInputProcessing : MonoBehaviour
             }
         }
     }
+
     public void Detect2D(Vector2 screenPosition, float size)
     {
         Vector2 point = Camera.main.ScreenToWorldPoint(new Vector3(screenPosition.x * Screen.width, screenPosition.y * Screen.height, Camera.main.nearClipPlane));
