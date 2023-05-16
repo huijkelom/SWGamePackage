@@ -13,11 +13,11 @@ public class SWButton : Button, I_SmartwallInteractable
 
     private bool Cooldown = false;
 
-#if !UNITY_EDITOR
+#if UNITY_EDITOR
     public void Hit(Vector3 hitpos) { }
 #endif
 
-#if UNITY_EDITOR
+#if !UNITY_EDITOR
     public void Hit(Vector3 location)
     {
         if (!Cooldown)
