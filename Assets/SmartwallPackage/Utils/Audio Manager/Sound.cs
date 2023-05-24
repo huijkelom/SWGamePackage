@@ -48,7 +48,6 @@ public class Sound
 
     public void SetClip(AudioClip clip)
     {
-        Clips[0] = clip;
         Source.clip = clip;
     }
 
