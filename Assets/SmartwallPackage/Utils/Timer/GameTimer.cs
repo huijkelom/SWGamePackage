@@ -129,9 +129,7 @@ public class GameTimer : MonoBehaviour
         }
 
         TimeRemaining = 0;
-        Color c = _FinishedFade.color;
-        c.a = 0.5f;
-        _FinishedFade.color = c;
+        _FinishedFade.enabled = true;
         AudioManager.Instance.Play("TimeRanOut");
         yield return new WaitForSeconds(0.5f);
 
