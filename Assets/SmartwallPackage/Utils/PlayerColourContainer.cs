@@ -44,3 +44,15 @@ public class PlayerColourContainer : MonoBehaviour
         return _Instance.PlayerColours[playerNumber - 1];
     }
 }
+
+public enum Player
+{
+    Player_1,
+    Player_2,
+    Player_3,
+    Player_4,
+    Player_5,
+    Player_6,
+    Player_7,
+    Player_8
+}

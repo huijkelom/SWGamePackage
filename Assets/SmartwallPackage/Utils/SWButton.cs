@@ -4,7 +4,6 @@ using System.Collections;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(Collider2D))]
 [AddComponentMenu("UI/Button", 30)]
 public class SWButton : Button, I_SmartwallInteractable
 {
@@ -52,4 +51,3 @@ public class SWButton : Button, I_SmartwallInteractable
     }
 #endif
 }
-    

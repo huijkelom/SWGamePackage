@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Testing/Init.unity
+    path: Assets/SmartwallPackage/Utils/Initialization/Init.unity
     guid: 0c8d98ebc82f23745b6b01ac2af33ef4
   - enabled: 1
     path: Assets/Testing/SWButtonTest.unity
