@@ -7,17 +7,13 @@ using System.Collections.Generic;
 [AddComponentMenu("UI/Button", 30)]
 public class SWButton : Button, I_SmartwallInteractable
 {
+    [Header("Moving down objects on button press")]
     public List<RectTransform> Graphics;
-    public int Pixels;
+    public float PressDistance;
 
     private bool Cooldown = false;
 
-#if UNITY_EDITOR
-    public void Hit(Vector3 hitpos) { }
-#endif
-
-#if !UNITY_EDITOR
-    public void Hit(Vector3 location)
+    public void Hit(Vector3 hitpos)
     {
         if (!Cooldown)
         {
@@ -25,6 +21,23 @@ public class SWButton : Button, I_SmartwallInteractable
         }
     }
 
+#if UNITY_EDITOR
+    private IEnumerator _FakeClick()
+    {
+        Cooldown = true;
+
+        MoveGraphics(-PressDistance);
+        while (currentSelectionState == SelectionState.Pressed)
+        {
+            yield return null;
+        }
+
+        MoveGraphics(PressDistance);
+        Cooldown = false;
+    }
+#endif
+
+#if !UNITY_EDITOR
     private IEnumerator _FakeClick()
     {
         Cooldown = true;
@@ -41,13 +54,13 @@ public class SWButton : Button, I_SmartwallInteractable
 
         Cooldown = false;
     }
+#endif
 
-    private void MoveGraphics(int direction)
+    private void MoveGraphics(float distance)
     {
         foreach (RectTransform graphic in Graphics)
         {
-            graphic.rect.Set(graphic.rect.x, graphic.rect.y + direction, graphic.rect.width, graphic.rect.height);
+            graphic.transform.Translate(Vector2.up * distance);
         }
     }
-#endif
 }
