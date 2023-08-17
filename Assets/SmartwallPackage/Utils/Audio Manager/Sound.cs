@@ -10,6 +10,8 @@ public class Sound
     [Space]
     public bool Loop = false;
     public bool PlayOnAwake = false;
+    [Tooltip("Makes the sound loop & play on awake, but have the volume reduced to 0 so it can be dynamically faded in and out while staying in sync with other tracks. Used primarily for dynamic music.")]
+    public bool SilentPlay = false;
     [Space]
     public AudioClip[] Clips = new AudioClip[1];
 

@@ -165,6 +165,16 @@ public class AudioManager : MonoBehaviour
         {
             sound.Source.Play();
         }
+
+        if (sound.SilentPlay)
+        {
+            sound.Loop = true;
+            sound.PlayOnAwake = true;
+            sound.Volume = 0;
+            sound.ApplyValues();
+
+            sound.Source.Play();
+        }
     }
     #endregion
 
@@ -205,6 +215,22 @@ public class AudioManager : MonoBehaviour
     }
 
     #endregion
+
+    //Fades out the currently playing song, and fades another one in
+    public void SwapSong(string newSong, float time)
+    {
+        foreach (Sound song in Music)
+        {
+            if (IsPlaying(song))
+            {
+                FadeOut(song.Name, time, false);
+            }
+        }
+
+        FadeIn(newSong, time);
+    }
+
+    #region Sound instances
 
     /// <summary>
     /// Creates a copy of an existing Sound
@@ -296,6 +322,10 @@ public class AudioManager : MonoBehaviour
     }
     //__________________________________________________________
 
+    #endregion
+
+    #region Play
+
     /// <summary>
     /// Plays a sound with the given name
     /// </summary>
@@ -367,6 +397,11 @@ public class AudioManager : MonoBehaviour
         return sound.Source.isPlaying;
     }
 
+    public bool IsPlaying(Sound sound)
+    {
+        return sound.Source.isPlaying;
+    }
+
     /// <summary>
     /// Randomly plays one of the Clips of the sound with the given name
     /// </summary>
@@ -394,6 +429,10 @@ public class AudioManager : MonoBehaviour
         sound.Source.Play();
     }
 
+    #endregion
+
+    #region Stop
+
     /// <summary>
     /// Stops the sound effect with the given name
     /// </summary>
@@ -420,6 +459,10 @@ public class AudioManager : MonoBehaviour
     }
     //
 
+    #endregion
+
+    #region Pause
+
     /// <summary>
     /// Pauses the sound effect with the given name
     /// </summary>
@@ -437,6 +480,10 @@ public class AudioManager : MonoBehaviour
         Sound sound = GetSound(name);
         sound.Source.UnPause();
     }
+
+    #endregion
+
+    #region Volume
 
     /// <summary>
     /// Sets the volume of the sound effect with the given name to a value between 0 and 1.
@@ -470,19 +517,26 @@ public class AudioManager : MonoBehaviour
     {
         Sound sound = GetSound(name);
 
-        sound.Source.Play();
+        if (!sound.Source.isPlaying)
+        {
+            sound.Source.Play();
+        }
+
         StartCoroutine(_SetVolume(sound, 0, 1, time));
     }
 
     /// <summary>
     /// Changes the volume level of name from 1 to 0
     /// </summary>
-    public void FadeOut(string name, float time)
+    public void FadeOut(string name, float time, bool stop = true)
     {
         Sound sound = GetSound(name);
-
         StartCoroutine(_SetVolume(sound, 1, 0, time));
-        StartCoroutine(_Stop(sound, time));
+
+        if (stop)
+        {
+            Stop(sound.Name, time);
+        }
     }
 
     private IEnumerator _SetVolume(Sound sound, float from, float to, float time)
@@ -492,7 +546,7 @@ public class AudioManager : MonoBehaviour
         float end = MasterVolume * typeVolume * sound.MaxVolume * to;
 
         float progress = 0;
-        while (progress <= 1)
+        while (progress < 1)
         {
             //continuously update the end value in case the user changes any volume settings while the volume is changing
             end = MasterVolume * typeVolume * sound.MaxVolume * to;
@@ -500,23 +554,15 @@ public class AudioManager : MonoBehaviour
             sound.Volume = Mathf.Lerp(start, end, progress);
             sound.ApplyValues();
 
-            progress += Time.deltaTime / time;
+            progress = Mathf.Clamp01(progress + Time.deltaTime / time);
             yield return null;
         }
-
-        if (end == 0)
-        {
-            sound.Source.Stop();
-            sound.SetVolume(MasterVolume * typeVolume * sound.MaxVolume * 1);
-        }
-        else
-        {
-            sound.Volume = end;
-        }
-
-        sound.ApplyValues();
     }
     //
+
+    #endregion
+
+    #region Pitch
 
     /// <summary>
     /// Sets the pitch of the sound effect with the given name to a value between 0 and 3
@@ -542,6 +588,10 @@ public class AudioManager : MonoBehaviour
         sound.Source.pitch = pitch;
     }
 
+    #endregion
+
+    #region Looping
+
     /// <summary>
     /// Starts or stops looping the sound effect with the given name
     /// </summary>
@@ -550,4 +600,6 @@ public class AudioManager : MonoBehaviour
         Sound sound = GetSound(name);
         sound.Source.loop = value;
     }
+
+    #endregion
 }
