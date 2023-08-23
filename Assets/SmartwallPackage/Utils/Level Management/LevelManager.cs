@@ -36,6 +36,17 @@ public class LevelManager : MonoBehaviour
         StartCoroutine(_LoadLevel(index, transition));
     }
 
+    public void LoadLevel(string name, Transition transition)
+    {
+        if (transition == Transition.None)
+        {
+            SceneManager.LoadScene(name);
+            return;
+        }
+
+        StartCoroutine(_LoadLevel(name, transition));
+    }
+
     /// <summary>
     /// Loads the level after the currently loaded sceen in the build queue
     /// </summary>
@@ -62,6 +73,15 @@ public class LevelManager : MonoBehaviour
         yield return new WaitForSeconds(TransitionTime);
 
         SceneManager.LoadScene(index);
+        Animator.SetTrigger("End");
+    }
+
+    private IEnumerator _LoadLevel(string name, Transition transition)
+    {
+        Animator.SetTrigger(transition.ToString());
+        yield return new WaitForSeconds(TransitionTime);
+
+        SceneManager.LoadScene(name);
         Animator.SetTrigger("End");
     }
 }

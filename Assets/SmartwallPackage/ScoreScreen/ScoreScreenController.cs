@@ -56,7 +56,16 @@ public class ScoreScreenController : MonoBehaviour
         Scores = scores;
         _LevelIndex = levelIndex;
         _Are0ScoresIgnored = ignore0Scores;
-        SceneManager.LoadScene("Scores");
+
+        if (LevelManager.Instance)
+        {
+            LevelManager.Instance.LoadLevel("Scores", Transition.Circle);
+        }
+        else
+        {
+            Debug.LogWarning("Levelmanager not found; continuing wiith default scenemanager");
+            SceneManager.LoadScene("Scores");
+        }      
     }
 
     void Start()
@@ -161,7 +170,7 @@ public class ScoreScreenController : MonoBehaviour
 
     private void SaveHighscore()
     {
-            XML_to_Class.SaveClassToXML(_Highscore, "StreamingAssets" + Path.DirectorySeparatorChar + "HighScore");
+        XML_to_Class.SaveClassToXML(_Highscore, "StreamingAssets" + Path.DirectorySeparatorChar + "HighScore");
     }
 
     private void LoadHighscore()
@@ -184,6 +193,14 @@ public class ScoreScreenController : MonoBehaviour
 
     public void BT_Replay_Clicked()
     {
-        SceneManager.LoadScene(IndexOfSceneToMoveTo);
+        if (LevelManager.Instance)
+        {
+            LevelManager.Instance.LoadLevel(IndexOfSceneToMoveTo, Transition.Circle);
+        }
+        else
+        {
+            Debug.LogWarning("Levelmanager not found; continuing wiith default scenemanager");
+            SceneManager.LoadScene(IndexOfSceneToMoveTo);
+        }
     }
 }
