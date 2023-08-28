@@ -43,14 +43,14 @@ public class SWButton : Button, I_SmartwallInteractable
         Cooldown = true;
 
         ExecuteEvents.Execute(gameObject, new PointerEventData(EventSystem.current), ExecuteEvents.pointerDownHandler);
-        MoveGraphics(-Pixels);
+        MoveGraphics(-PressDistance);
 
         yield return new WaitForSeconds(0.1f);
         ExecuteEvents.Execute(gameObject, new PointerEventData(EventSystem.current), ExecuteEvents.pointerClickHandler);
         yield return new WaitForSeconds(0.1f);
 
         ExecuteEvents.Execute(gameObject, new PointerEventData(EventSystem.current), ExecuteEvents.pointerUpHandler);
-        MoveGraphics(Pixels);
+        MoveGraphics(PressDistance);
 
         Cooldown = false;
     }
