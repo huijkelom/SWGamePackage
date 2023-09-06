@@ -12,6 +12,7 @@ public class PlayerColourContainer : MonoBehaviour
 
     public Color HighscoreColour;
     public List<Color> PlayerColours = new List<Color>();
+    public List<Sprite> PlayerIcons = new List<Sprite>();
 
     private void Awake()
     {
@@ -43,16 +44,30 @@ public class PlayerColourContainer : MonoBehaviour
         }
         return _Instance.PlayerColours[playerNumber - 1];
     }
+
+    public static Sprite GetPlayerIcon(int playerNumber)
+    {
+        if (playerNumber < 0 || playerNumber > _Instance.PlayerColours.Count)
+        {
+            Debug.LogError("PlayerColourContainer | GetPlayerColour | Player number is out of bounds: " + playerNumber.ToString() + ". Value clamped!");
+            Mathf.Clamp(playerNumber, 0, _Instance.PlayerColours.Count);
+        }
+        if (playerNumber == 0)
+        {
+            return null;
+        }
+        return _Instance.PlayerIcons[playerNumber - 1];
+    }
 }
 
 public enum Player
 {
-    Player_1,
-    Player_2,
-    Player_3,
-    Player_4,
-    Player_5,
-    Player_6,
-    Player_7,
-    Player_8
+    Player_1 = 1,
+    Player_2 = 2,
+    Player_3 = 3,
+    Player_4 = 4,
+    Player_5 = 5,
+    Player_6 = 6,
+    Player_7 = 7,
+    Player_8 = 8
 }

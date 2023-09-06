@@ -13,6 +13,6 @@ public class SWButtonGUI : ButtonEditor
         //SWButton.Graphics = EditorGUILayout.PropertyField();
         EditorGUILayout.PropertyField(serializedObject.FindProperty("Graphics"), true);
         serializedObject.ApplyModifiedProperties();
-        SWButton.PressDistance = EditorGUILayout.FloatField("Pixels", SWButton.PressDistance);
+        SWButton.PressDistance = EditorGUILayout.FloatField("PressDistance", SWButton.PressDistance);
     }
 }

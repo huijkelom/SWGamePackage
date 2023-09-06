@@ -70,19 +70,31 @@ public class LevelManager : MonoBehaviour
     private IEnumerator _LoadLevel(int index, Transition transition)
     {
         Animator.SetTrigger(transition.ToString());
-        yield return new WaitForSeconds(TransitionTime);
+        AudioManager.Instance.Play("TransitionOut");
 
-        SceneManager.LoadScene(index);
-        Animator.SetTrigger("End");
+        yield return new WaitForSeconds(1f);
+        AsyncOperation loading = SceneManager.LoadSceneAsync(index);
+        while (!loading.isDone)
+        {
+            yield return null;
+        }
+
+        AudioManager.Instance.Play("TransitionIn");
     }
 
     private IEnumerator _LoadLevel(string name, Transition transition)
     {
         Animator.SetTrigger(transition.ToString());
-        yield return new WaitForSeconds(TransitionTime);
+        AudioManager.Instance.Play("TransitionOut");
 
-        SceneManager.LoadScene(name);
-        Animator.SetTrigger("End");
+        yield return new WaitForSeconds(1f);
+        AsyncOperation loading = SceneManager.LoadSceneAsync(name);
+        while (!loading.isDone)
+        {
+            yield return null;
+        }
+
+        AudioManager.Instance.Play("TransitionIn");
     }
 }
 
