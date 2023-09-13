@@ -339,6 +339,35 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1292733122895889457, guid: d21d40e053a0ceb499904da364436a28,
+        type: 3}
+      propertyPath: PlayerIcons.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1292733122895889457, guid: d21d40e053a0ceb499904da364436a28,
+        type: 3}
+      propertyPath: PlayerIcons.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: ae4128c9d4576544c92428da1c616319,
+        type: 3}
+    - target: {fileID: 1292733122895889457, guid: d21d40e053a0ceb499904da364436a28,
+        type: 3}
+      propertyPath: PlayerIcons.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300002, guid: ae4128c9d4576544c92428da1c616319,
+        type: 3}
+    - target: {fileID: 1292733122895889457, guid: d21d40e053a0ceb499904da364436a28,
+        type: 3}
+      propertyPath: PlayerIcons.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300004, guid: ae4128c9d4576544c92428da1c616319,
+        type: 3}
+    - target: {fileID: 1292733122895889457, guid: d21d40e053a0ceb499904da364436a28,
+        type: 3}
+      propertyPath: PlayerIcons.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300006, guid: ae4128c9d4576544c92428da1c616319,
+        type: 3}
     - target: {fileID: 7580370671467913558, guid: d21d40e053a0ceb499904da364436a28,
         type: 3}
       propertyPath: m_LocalPosition.x
