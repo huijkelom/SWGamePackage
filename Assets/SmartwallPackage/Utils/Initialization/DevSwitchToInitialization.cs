@@ -7,7 +7,8 @@ public class DevSwitchToInitialization : MonoBehaviour
 {
     private void Awake()
     {
-        if (AudioManager.Instance == null)
+        try { MainThreadDispatcher.Instance.Ping(); }
+        catch (Exception ex)
         {
             SceneManager.LoadScene(0);
             Debug.LogWarning("DevSwitchToInitialization | Start | No gamemaster detected, did you start from an init scene?");
