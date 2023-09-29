@@ -7,7 +7,7 @@ using UnityEngine;
 
 /// <summary>
 /// This class makes connection with the DSoft, reads the incoming blob data and processes it into a List of Blob objects
-/// The List of Blob objects is publicly and staticly availible so other classes can easely acces it from anywhere.
+/// The List of Blob objects is publicly and staticly available so other classes can easely access it from anywhere.
 /// The class also offers a NewBlobData event that will send a list of the new Blobs recieved.
 /// Take into account that you will not recieve new data every frame, hence the public List.
 /// </summary>

@@ -6,10 +6,10 @@ using UnityEngine;
 public enum InputTypes { Raycast2D, Raycast3D, Both}
 
 /// <summary>
-/// This class take the Blob data and translates it to interaction. The class will use a cylinder cast / overlap circle
-/// the size of wich is determined by the size of the ball as detected by the system. If AccountForBallSize is false
+/// This class takes the Blob data and translates it to interactions. The class uses a cylinder cast / overlap circle
+/// the size of which is determined by the size of the ball as detected by the system. If AccountForBallSize is set to false
 /// a raycast from the center of the ball will be used instead. All gameobjects with colliders in the casted path will
-/// have the Hit() methos called on all thier scripts implemneting the I_SmartwallInteractible interface.
+/// have the Hit() method called on all their scripts implementing the I_SmartwallInteractible interface.
 /// Note that it is possible to have multiple BlobInputProcessing in a scene if you want to use 2D and 3D detection.
 /// </summary>
 public class BlobInputProcessing : MonoBehaviour
