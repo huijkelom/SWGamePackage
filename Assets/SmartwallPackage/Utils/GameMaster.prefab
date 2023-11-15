@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 7580370671467913579}
   - component: {fileID: 1292733122895889457}
   - component: {fileID: 1487633214657388522}
-  - component: {fileID: 114117388939419840}
   m_Layer: 0
   m_Name: GameMaster
   m_TagString: Untagged
@@ -124,6 +123,7 @@ MonoBehaviour:
   - {r: 0.31764707, g: 0.9411765, b: 0.74509805, a: 1}
   - {r: 0.9411765, g: 0.6862745, b: 0.31764707, a: 1}
   - {r: 1, g: 0.627451, b: 0.8039216, a: 1}
+  PlayerIcons: []
 --- !u!114 &1487633214657388522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,16 +137,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SettingToMake: []
---- !u!114 &114117388939419840
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7580370671467913580}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58397f584d9e99f46aec2a6396b336b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SceneIndex: 1

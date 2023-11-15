@@ -44,14 +44,11 @@ public class ScoreScreenController : MonoBehaviour
     /// <param name="sceneIndex">Scene to move to from score scene, defaults to one.</param>
     public static void MoveToScores(List<int> scores,int levelIndex = 1, int sceneIndex = 1, bool ignore0Scores = true)
     {
-        if (scores == null)
+        if (scores == null || scores.Count == 0)
         {
             Debug.LogError("ScoreScreenController | MoveToScores | No scores have been stored in the scores list!");
         }
-        else if (scores.Count == 0)
-        {
-            Debug.LogError("ScoreScreenController | MoveToScores | No scores have been stored in the scores list!");
-        }
+
         IndexOfSceneToMoveTo = sceneIndex;
         Scores = scores;
         _LevelIndex = levelIndex;
@@ -104,7 +101,7 @@ public class ScoreScreenController : MonoBehaviour
                 if (score == 0 && _Are0ScoresIgnored) { numberOf0Scores++; }
                 if (score > highestScore) { highestScore = score; }
             }
-            //safety check, if we add a level it wount be in the highscore script
+            //safety check, if we add a level it won't be in the highscore script
             if (_Highscore.Highscores.Count - 1 < _LevelIndex)
             {
                 int count = _LevelIndex + 1 - _Highscore.Highscores.Count;
@@ -199,7 +196,7 @@ public class ScoreScreenController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Levelmanager not found; continuing wiith default scenemanager");
+            Debug.LogWarning("Levelmanager not found; continuing with default scenemanager");
             SceneManager.LoadScene(IndexOfSceneToMoveTo);
         }
     }

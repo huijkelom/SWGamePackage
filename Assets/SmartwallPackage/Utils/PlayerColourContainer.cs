@@ -62,6 +62,7 @@ public class PlayerColourContainer : MonoBehaviour
 
 public enum Player
 {
+    HighScore = 0,
     Player_1 = 1,
     Player_2 = 2,
     Player_3 = 3,

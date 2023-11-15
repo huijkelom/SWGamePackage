@@ -595,10 +595,10 @@ public class AudioManager : MonoBehaviour
     /// <summary>
     /// Starts or stops looping the sound effect with the given name
     /// </summary>
-    public void SetLoop(string name, bool value)
+    public void SetLoop(string name, bool state)
     {
         Sound sound = GetSound(name);
-        sound.Source.loop = value;
+        sound.Source.loop = state;
     }
 
     #endregion
