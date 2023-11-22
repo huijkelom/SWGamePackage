@@ -86,7 +86,7 @@ public class BlobInputProcessing : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Active && Input.GetMouseButton(0))
         {
             InteractInput(new Vector2(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height), 0.05f);
         }
