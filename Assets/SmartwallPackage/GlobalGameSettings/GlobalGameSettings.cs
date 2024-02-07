@@ -8,6 +8,7 @@ public class GlobalGameSetting
     public string Label;
     public string Value;
     public List<string> PossibleValues;
+    [Tooltip("Obsolete, doesn't do anything")]
     public string Default;
 }
 
