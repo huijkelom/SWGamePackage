@@ -8,16 +8,13 @@ public class SWToggle : Toggle, I_SmartwallInteractable
     private bool Cooldown = false;
 
 #if UNITY_EDITOR
-    public void Hit(Vector3 hitpos)
-    {
-
-    }
+    public void Hit(Vector3 hitPosition, InputType inputType) { }
 #endif
 
 #if !UNITY_EDITOR
-    public void Hit(Vector3 location)
+    public void Hit(Vector3 hitPosition, InputType inputType)
     {
-        if (!Cooldown)
+        if (inputType == InputType.Ball && !Cooldown)
         {
             StartCoroutine(_FakeClick());
         }

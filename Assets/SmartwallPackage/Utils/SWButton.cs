@@ -9,28 +9,19 @@ public class SWButton : Button, I_SmartwallInteractable
 {
     private bool Cooldown = false;
 
-    public void Hit(Vector3 hitpos)
+#if UNITY_EDITOR
+    public void Hit(Vector3 hitPosition, InputType inputType) { }
+#endif
+
+#if !UNITY_EDITOR
+    public void Hit(Vector3 hitPosition, InputType inputType)
     {
-        if (!Cooldown)
+        if (inputType == InputType.Ball && !Cooldown)
         {
             StartCoroutine(_FakeClick());
         }
     }
 
-#if UNITY_EDITOR
-    private IEnumerator _FakeClick()
-    {
-        Cooldown = true;
-        while (currentSelectionState == SelectionState.Pressed)
-        {
-            yield return null;
-        }
-
-        Cooldown = false;
-    }
-#endif
-
-#if !UNITY_EDITOR
     private IEnumerator _FakeClick()
     {
         Cooldown = true;

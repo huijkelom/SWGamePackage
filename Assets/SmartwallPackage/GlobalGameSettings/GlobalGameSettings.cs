@@ -9,7 +9,7 @@ public class GlobalGameSetting
     public string Value;
     public List<string> PossibleValues;
     [Tooltip("Obsolete, doesn't do anything")]
-    public string Default;
+    private string Default;
 }
 
 public class GlobalGameSettings : MonoBehaviour
@@ -25,17 +25,20 @@ public class GlobalGameSettings : MonoBehaviour
         {
             _Settings = XML_to_Class.LoadClassFromXML<List<GlobalGameSetting>>("StreamingAssets" + Path.DirectorySeparatorChar + "SavedData" + Path.DirectorySeparatorChar + "GlobalGameSettings.xml");
         }
+
         if (_Settings == null) //file was missing, use default.
         {
             Debug.LogWarning("GlobalGameSettings | GetSetting | Settings File is missing! Please create one. Creating default now.");
             _Instance.CreateSettingFile();
             _Settings = XML_to_Class.LoadClassFromXML<List<GlobalGameSetting>>("StreamingAssets" + Path.DirectorySeparatorChar + "SavedData" + Path.DirectorySeparatorChar + "GlobalGameSettings.xml");
         }
+
         if(_Settings == null)
         {
             Debug.LogError("GlobalGameSettings | GetSetting | Default settings file could not be made!");
         }
-        else {
+        else
+        {
             GlobalGameSetting temp = FindSettingByName(nameOfSetting);
             if(temp != null)
             {
@@ -43,6 +46,7 @@ public class GlobalGameSettings : MonoBehaviour
             }
             Debug.LogWarning("GlobalGameSettings | GetSetting | No setting by that name was found: " + nameOfSetting);
         }
+
         return string.Empty;
     }
 
@@ -65,6 +69,11 @@ public class GlobalGameSettings : MonoBehaviour
     private void Awake()
     {
         _Instance = this;
+        string resetHighScore = GetSetting("Reset HighScore");
+        if (resetHighScore != string.Empty)
+        {
+
+        }
     }
 
     public void CreateSettingFile()

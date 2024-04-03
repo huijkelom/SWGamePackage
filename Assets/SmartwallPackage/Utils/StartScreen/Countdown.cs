@@ -30,7 +30,7 @@ public class Countdown : MonoBehaviour, I_SmartwallInteractable
         AudioManager.Instance.Play("CountdownGo");
     }
 
-    public void Hit(Vector3 hitPosition)
+    public void Hit(Vector3 hitPosition, InputType inputType)
     {
         if (!started)
         {

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public enum InputTypes { Raycast2D, Raycast3D, Both}
+public enum DetectionType { Raycast2D, Raycast3D, Both }
+public enum InputType { Ball, MouseDown, MouseHold, MouseUp }
 
 /// <summary>
 /// This class takes the Blob data and translates it to interactions. The class uses a cylinder cast / overlap circle
@@ -14,7 +15,7 @@ public enum InputTypes { Raycast2D, Raycast3D, Both}
 /// </summary>
 public class BlobInputProcessing : MonoBehaviour
 {
-    public InputTypes InputType;
+    public DetectionType DetectionType;
     /// <summary>
     /// rather then interacting on a single point should everthing in the balls radius be hit?
     /// This only works reliably when using orthographic cameras!
@@ -62,14 +63,14 @@ public class BlobInputProcessing : MonoBehaviour
                         totalSize += b.Width;
                     }
 
-                    InteractInput(total / BlobDetectionGateway.Blobs.Count, totalSize / BlobDetectionGateway.Blobs.Count);
+                    InteractInput(total / BlobDetectionGateway.Blobs.Count, totalSize / BlobDetectionGateway.Blobs.Count, InputType.Ball);
                 }
             }
             else
             {
                 foreach (Blob b in BlobDetectionGateway.Blobs)
                 {
-                    InteractInput(b.Position, b.Width);
+                    InteractInput(b.Position, b.Width, InputType.Ball);
                 }
             }
 
@@ -82,13 +83,26 @@ public class BlobInputProcessing : MonoBehaviour
     }
 
     /// <summary>
-    /// Handles (debug) mouse input.
+    /// Handles mouse input.
     /// </summary>
     private void Update()
     {
-        if (Active && Input.GetMouseButton(0))
+        if (Active)
         {
-            InteractInput(new Vector2(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height), 0.05f);
+            //Mouse clicks
+            if (Input.GetMouseButtonDown(0))
+            {
+                InteractInput(new Vector2(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height), 0.05f, InputType.MouseDown);
+            }
+            //Mouse holds
+            else if (Input.GetMouseButton(0))
+            {
+                InteractInput(new Vector2(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height), 0.05f, InputType.MouseHold);
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                InteractInput(new Vector2(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height), 0.05f, InputType.MouseUp);
+            }
         }
     }
 
@@ -97,39 +111,42 @@ public class BlobInputProcessing : MonoBehaviour
     /// On succes it will try to fetch a class implementing I_SmartwallInteractable on the gameobject 
     /// it hit and call the Hit(Vector3 hitPosition) method.
     /// </summary>
-    private void InteractInput(Vector2 screenPosition, float size)
+    private void InteractInput(Vector2 screenPosition, float size, InputType inputType)
     {
-        if(UninteractableAreaSize > 0)
+        if (UninteractableAreaSize > 0)
         {
-            foreach(KeyValuePair<Vector2,bool> kvp in _InteractedPoints)
+            foreach (KeyValuePair<Vector2,bool> kvp in _InteractedPoints)
             {
-                if(Vector2.Distance(screenPosition,kvp.Key) < (float)UninteractableAreaSize / 100f)
+                if (Vector2.Distance(screenPosition,kvp.Key) < (float)UninteractableAreaSize / 100f)
                 {
                     _InteractedPoints[kvp.Key] = true;
                     return;
                 }
             }
+
             _InteractedPoints.Add(screenPosition, true);
         }
-        switch (InputType)
+
+        switch (DetectionType)
         {
-            case InputTypes.Raycast3D:
-                Detect3D(screenPosition, size);
+            case DetectionType.Raycast3D:
+                Detect3D(screenPosition, size, inputType);
                 break;
-            case InputTypes.Raycast2D:
-                Detect2D(screenPosition, size);
+            case DetectionType.Raycast2D:
+                Detect2D(screenPosition, size, inputType);
                 break;
-            case InputTypes.Both:
-                Detect3D(screenPosition, size);
-                Detect2D(screenPosition, size);
+            case DetectionType.Both:
+                Detect3D(screenPosition, size, inputType);
+                Detect2D(screenPosition, size, inputType);
                 break;
         }
     }
 
-    public void Detect3D(Vector2 screenPosition, float size)
+    public void Detect3D(Vector2 screenPosition, float size, InputType inputType)
     {
         Ray ray = Camera.main.ScreenPointToRay(new Vector3(screenPosition.x * Screen.width, screenPosition.y * Screen.height, 0f));
         Debug.DrawRay(ray.origin, ray.direction);
+
         if (AccountForBallSize)
         {
             RaycastHit[] hits = Physics.CapsuleCastAll(ray.origin, ray.origin + ray.direction, (size * Screen.width) * (Camera.main.orthographicSize / (float)Screen.height), ray.direction);
@@ -137,7 +154,7 @@ public class BlobInputProcessing : MonoBehaviour
             {
                 foreach (I_SmartwallInteractable script in hit.transform.gameObject.GetComponents<I_SmartwallInteractable>())
                 {
-                    script.Hit(hit.point);
+                    script.Hit(hit.point, inputType);
                 }
             }
         }
@@ -148,20 +165,20 @@ public class BlobInputProcessing : MonoBehaviour
             {
                 foreach (I_SmartwallInteractable script in hit.transform.gameObject.GetComponents<I_SmartwallInteractable>())
                 {
-                    script.Hit(hit.point);
+                    script.Hit(hit.point, inputType);
                 }
             }
         }
     }
 
-    public void Detect2D(Vector2 screenPosition, float size)
+    public void Detect2D(Vector2 screenPosition, float size, InputType inputType)
     {
         Vector2 point = Camera.main.ScreenToWorldPoint(new Vector3(screenPosition.x * Screen.width, screenPosition.y * Screen.height, Camera.main.nearClipPlane));
         Debug.DrawRay(new Vector3(point.x, point.y, 0f), Vector3.forward, Color.red);
         List<Collider2D> hits2D = new List<Collider2D>();
         if (AccountForBallSize)
         {
-            hits2D.AddRange(Physics2D.OverlapCircleAll(point, (Camera.main.orthographicSize * 2f)*size));
+            hits2D.AddRange(Physics2D.OverlapCircleAll(point, (Camera.main.orthographicSize * 2f) * size));
         }
         else
         {
@@ -171,7 +188,7 @@ public class BlobInputProcessing : MonoBehaviour
         {
             foreach (I_SmartwallInteractable script in hit2D.transform.gameObject.GetComponents<I_SmartwallInteractable>())
             {
-                script.Hit(new Vector3(point.x, point.y, 0f));
+                script.Hit(new Vector3(point.x, point.y, 0f), inputType);
             }
         }
     }

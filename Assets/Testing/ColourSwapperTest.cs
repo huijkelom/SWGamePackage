@@ -5,7 +5,7 @@ using UnityEngine;
 public class ColourSwapperTest : MonoBehaviour, I_SmartwallInteractable
 {
     public AudioSource As;
-    public void Hit(Vector3 hitPosition)
+    public void Hit(Vector3 hitPosition, InputType inputType)
     {
         As.Play();
     }

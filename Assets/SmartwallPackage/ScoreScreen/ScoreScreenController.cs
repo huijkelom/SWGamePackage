@@ -81,6 +81,10 @@ public class ScoreScreenController : MonoBehaviour
             {
                 LoadHighscore();
             }
+            else
+            {
+                XML_to_Class.SaveClassToXML(0, "StreamingAssets" + Path.DirectorySeparatorChar + "HighScore");
+            }
         }
 
         //check if we have all requirements linked
