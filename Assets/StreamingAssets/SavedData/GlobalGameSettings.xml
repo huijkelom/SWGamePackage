@@ -1,12 +1,14 @@
 <?xml version="1.0"?>
 <ArrayOfGlobalGameSetting xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <GlobalGameSetting>
-    <Label>Reset HS</Label>
-    <Value>No</Value>
+    <Label>Players</Label>
+    <SelectedIndex>0</SelectedIndex>
+    <Type>Dropdown</Type>
     <PossibleValues>
-      <string>No</string>
-      <string>Yes</string>
+      <string>1</string>
+      <string>2</string>
+      <string>3</string>
+      <string>4</string>
     </PossibleValues>
-    <Default>No</Default>
   </GlobalGameSetting>
 </ArrayOfGlobalGameSetting>

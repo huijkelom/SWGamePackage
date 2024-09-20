@@ -6,10 +6,18 @@ using UnityEngine;
 public class GlobalGameSetting
 {
     public string Label;
-    public string Value;
+    public int SelectedIndex;
+    public LabelType Type = LabelType.Dropdown;
     public List<string> PossibleValues;
-    [Tooltip("Obsolete, doesn't do anything")]
-    private string Default;
+}
+
+public enum LabelType
+{
+    Dropdown,
+    Range,
+    Check
+    //Button,
+    //TextField
 }
 
 public class GlobalGameSettings : MonoBehaviour
@@ -39,10 +47,10 @@ public class GlobalGameSettings : MonoBehaviour
         }
         else
         {
-            GlobalGameSetting temp = FindSettingByName(nameOfSetting);
-            if(temp != null)
+            GlobalGameSetting setting = FindSettingByName(nameOfSetting);
+            if(setting != null)
             {
-                return temp.Value;
+                return setting.PossibleValues[setting.SelectedIndex];
             }
             Debug.LogWarning("GlobalGameSettings | GetSetting | No setting by that name was found: " + nameOfSetting);
         }

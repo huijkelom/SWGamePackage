@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
-[AddComponentMenu("UI/Button", 30)]
+[AddComponentMenu("UI/Button/SWButton", 30)]
 public class SWButton : Button, I_SmartwallInteractable
 {
     private bool Cooldown = false;
