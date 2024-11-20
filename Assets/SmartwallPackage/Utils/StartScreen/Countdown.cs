@@ -6,23 +6,13 @@ using UnityEngine.UI;
 
 public class Countdown : MonoBehaviour, I_SmartwallInteractable
 {
-    [SerializeField] private List<GameObject> Numbers = new List<GameObject>();
-    [SerializeField] private Image I_HitMe;
-    [SerializeField] private UnityEvent CountdownFinished = new UnityEvent();
+    public List<GameObject> Numbers = new List<GameObject>();
+    public Image I_HitMe;
+    public UnityEvent CountdownFinished = new UnityEvent();
 
     private bool started = false;
 
-    public void Hit(Vector3 hitPosition, InputType inputType)
-    {
-        if (!started)
-        {
-            I_HitMe.enabled = false;
-            StartCoroutine(CountDown());
-            started = true;
-        }
-    }
-
-    private IEnumerator CountDown()
+    IEnumerator CountDown()
     {
         foreach (GameObject go in Numbers)
         {
@@ -38,5 +28,15 @@ public class Countdown : MonoBehaviour, I_SmartwallInteractable
 
         gameObject.GetComponent<Image>().enabled = false;
         AudioManager.Instance.Play("CountdownGo");
+    }
+
+    public void Hit(Vector3 hitPosition, InputType inputType)
+    {
+        if (!started)
+        {
+            I_HitMe.enabled = false;
+            StartCoroutine(CountDown());
+            started = true;
+        }
     }
 }
