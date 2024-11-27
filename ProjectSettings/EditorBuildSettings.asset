@@ -17,10 +17,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Testing/ScoreTesting.unity
     guid: 97aafe713a52ad54b8843da2809189a1
-  - enabled: 0
+  - enabled: 1
     path: Assets/SmartwallPackage/ScoreScreen/Scores.unity
     guid: 13c4d517eb6feff47bf8f4d9a358b8dd
-  - enabled: 1
+  - enabled: 0
     path: Assets/Testing/InputType/InputTypeTest.unity
     guid: 138a7f7bd4ad7334aaf6f1896f63d057
   m_configObjects: {}

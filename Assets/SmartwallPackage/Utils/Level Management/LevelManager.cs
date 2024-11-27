@@ -69,7 +69,7 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator _LoadLevel(int index, Transition transition)
     {
-        Animator.SetTrigger(transition.ToString());
+        Animator.Play(transition.ToString() + "_Out");
         AudioManager.Instance.Play("TransitionOut");
 
         yield return new WaitForSeconds(1f);
@@ -79,6 +79,7 @@ public class LevelManager : MonoBehaviour
             yield return null;
         }
 
+        Animator.Play(transition.ToString() + "_In");
         AudioManager.Instance.Play("TransitionIn");
     }
 
@@ -104,5 +105,6 @@ public enum Transition
     Crossfade,
     Circle,
     ZigZag,
-    Heart
+    Heart,
+    PixelCircle
 }
