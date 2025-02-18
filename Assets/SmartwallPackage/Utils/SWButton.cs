@@ -4,16 +4,42 @@ using System.Collections;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
-[AddComponentMenu("UI/Button", 30)]
-public class SWButton : Button, I_SmartwallInteractable
+[RequireComponent(typeof(Button))]
+[RequireComponent(typeof(BoxCollider2D))]
+[ExecuteInEditMode]
+public class SWButton : MonoBehaviour, I_SmartwallInteractable
 {
-    private bool Cooldown = false;
-
 #if UNITY_EDITOR
+    private Vector2 DeltaSize;
+    private BoxCollider2D BoxCollider;
+
+    private RectTransform RectTransform;
+
+    private void Awake()
+    {
+        RectTransform = GetComponent<RectTransform>();
+        BoxCollider = transform.GetComponent<BoxCollider2D>();
+
+        DeltaSize = RectTransform.rect.size;
+        BoxCollider.size = DeltaSize + Vector2.one * 50;
+    }
+
+    private void Update()
+    {
+        Vector2 rectSize = RectTransform.rect.size;
+        if (rectSize != DeltaSize)
+        {
+            DeltaSize = rectSize;
+            BoxCollider.size = RectTransform.rect.size + Vector2.one * 50;         
+        }
+    }
+
     public void Hit(Vector3 hitPosition, InputType inputType) { }
 #endif
 
 #if !UNITY_EDITOR
+    private bool Cooldown = false;
+
     public void Hit(Vector3 hitPosition, InputType inputType)
     {
         if (inputType == InputType.Ball && !Cooldown)
