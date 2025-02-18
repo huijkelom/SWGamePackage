@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/SmartwallPackage/Utils/Initialization/Init.unity
     guid: 857f4437d97781f42aa290f2cc1f04f0
-  - enabled: 0
+  - enabled: 1
     path: Assets/Testing/SWButtonTest.unity
     guid: 04c155e782151b946864eac577eea869
   - enabled: 0
@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Testing/ScoreTesting.unity
     guid: 97aafe713a52ad54b8843da2809189a1
-  - enabled: 1
+  - enabled: 0
     path: Assets/SmartwallPackage/ScoreScreen/Scores.unity
     guid: 13c4d517eb6feff47bf8f4d9a358b8dd
   - enabled: 0

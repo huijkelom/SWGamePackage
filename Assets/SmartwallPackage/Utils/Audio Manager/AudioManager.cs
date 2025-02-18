@@ -97,7 +97,7 @@ public class AudioManager : MonoBehaviour
     private void Awake()
     {
         //Create a singleton pattern that doesn't get destroyed on load
-        if (Instance == null)
+        if (!Instance)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);

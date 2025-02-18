@@ -119,6 +119,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4989836045423086356, guid: 776fc9e671bb2504abca7ee04e2417bd,
+        type: 3}
+      propertyPath: Music.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4989836045423086356, guid: 776fc9e671bb2504abca7ee04e2417bd,
+        type: 3}
+      propertyPath: Dialogue.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4989836045423086356, guid: 776fc9e671bb2504abca7ee04e2417bd,
+        type: 3}
+      propertyPath: Dialogue.Array.data[0].Clips.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4989836045423086356, guid: 776fc9e671bb2504abca7ee04e2417bd,
+        type: 3}
+      propertyPath: Dialogue.Array.data[0].Volume
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4989836045423086356, guid: 776fc9e671bb2504abca7ee04e2417bd,
+        type: 3}
+      propertyPath: Dialogue.Array.data[0].Pitch
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4989836045423086357, guid: 776fc9e671bb2504abca7ee04e2417bd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -401,7 +426,7 @@ PrefabInstance:
     - target: {fileID: 1487633214657388522, guid: d21d40e053a0ceb499904da364436a28,
         type: 3}
       propertyPath: SettingToMake.Array.data[0].Value
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1487633214657388522, guid: d21d40e053a0ceb499904da364436a28,
         type: 3}
