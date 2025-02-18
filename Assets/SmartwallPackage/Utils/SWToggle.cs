@@ -3,15 +3,53 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.EventSystems;
 
-public class SWToggle : Toggle, I_SmartwallInteractable
+[RequireComponent(typeof(Toggle))]
+[RequireComponent(typeof(BoxCollider2D))]
+[ExecuteInEditMode]
+public class SWToggle : MonoBehaviour, I_SmartwallInteractable
 {
-    private bool Cooldown = false;
+#if UNITY_EDITOR   
+    private BoxCollider2D BoxCollider;
+    private RectTransform RectTransform;
 
-#if UNITY_EDITOR
+    private Vector2 DeltaSize;
+    private Vector2 DeltaOffset;
+       
+    private void Awake()
+    {
+        RectTransform = transform.GetChild(0).GetComponent<RectTransform>();
+        BoxCollider = transform.GetComponent<BoxCollider2D>();
+
+        DeltaSize = RectTransform.rect.size;
+        BoxCollider.size = DeltaSize + Vector2.one * 50;
+
+        DeltaOffset = RectTransform.localPosition;
+        BoxCollider.offset = DeltaOffset;
+    }
+
+    private void Update()
+    {
+        Vector2 rectSize = RectTransform.rect.size;
+        if (rectSize != DeltaSize)
+        {
+            DeltaSize = rectSize;
+            BoxCollider.size = rectSize + Vector2.one * 50;
+        }
+
+        Vector2 RectOffset = RectTransform.localPosition;
+        if (RectOffset != DeltaOffset)
+        {
+            DeltaOffset = RectOffset;
+            BoxCollider.offset = RectOffset;
+        }
+    }
+
     public void Hit(Vector3 hitPosition, InputType inputType) { }
 #endif
 
 #if !UNITY_EDITOR
+    private bool Cooldown = false;
+
     public void Hit(Vector3 hitPosition, InputType inputType)
     {
         if (inputType == InputType.Ball && !Cooldown)
