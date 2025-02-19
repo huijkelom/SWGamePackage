@@ -11,6 +11,7 @@ public class SWButton : MonoBehaviour, I_SmartwallInteractable
 {
 #if UNITY_EDITOR
     private Vector2 DeltaSize;
+    private Vector2 DeltaPadding;
     private BoxCollider2D BoxCollider;
 
     private RectTransform RectTransform;
@@ -21,7 +22,8 @@ public class SWButton : MonoBehaviour, I_SmartwallInteractable
         BoxCollider = transform.GetComponent<BoxCollider2D>();
 
         DeltaSize = RectTransform.rect.size;
-        BoxCollider.size = DeltaSize + Vector2.one * 50;
+        DeltaPadding = new Vector2(50, 50);
+        BoxCollider.size = DeltaSize + DeltaPadding;
     }
 
     private void Update()
@@ -30,7 +32,12 @@ public class SWButton : MonoBehaviour, I_SmartwallInteractable
         if (rectSize != DeltaSize)
         {
             DeltaSize = rectSize;
-            BoxCollider.size = RectTransform.rect.size + Vector2.one * 50;         
+            BoxCollider.size = rectSize + DeltaPadding;         
+        }
+
+        if (BoxCollider.size != DeltaSize + DeltaPadding)
+        {
+            DeltaPadding = BoxCollider.size - rectSize;
         }
     }
 

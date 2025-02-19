@@ -14,14 +14,15 @@ public class SWToggle : MonoBehaviour, I_SmartwallInteractable
 
     private Vector2 DeltaSize;
     private Vector2 DeltaOffset;
-       
+    private Vector2 DeltaPadding = new Vector2(50, 50);
+
     private void Awake()
     {
         RectTransform = transform.GetChild(0).GetComponent<RectTransform>();
         BoxCollider = transform.GetComponent<BoxCollider2D>();
 
         DeltaSize = RectTransform.rect.size;
-        BoxCollider.size = DeltaSize + Vector2.one * 50;
+        BoxCollider.size = DeltaSize + DeltaPadding;
 
         DeltaOffset = RectTransform.localPosition;
         BoxCollider.offset = DeltaOffset;
@@ -33,7 +34,7 @@ public class SWToggle : MonoBehaviour, I_SmartwallInteractable
         if (rectSize != DeltaSize)
         {
             DeltaSize = rectSize;
-            BoxCollider.size = rectSize + Vector2.one * 50;
+            BoxCollider.size = rectSize + DeltaPadding;
         }
 
         Vector2 RectOffset = RectTransform.localPosition;
@@ -41,6 +42,11 @@ public class SWToggle : MonoBehaviour, I_SmartwallInteractable
         {
             DeltaOffset = RectOffset;
             BoxCollider.offset = RectOffset;
+        }
+
+        if (BoxCollider.size != DeltaSize + DeltaPadding)
+        {
+            DeltaPadding = BoxCollider.size - rectSize;
         }
     }
 
