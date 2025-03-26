@@ -92,7 +92,7 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator _LoadLevel(string name, Transition transition)
     {
-        Animator.SetTrigger(transition.ToString());
+        Animator.Play(transition.ToString() + "_Out");
         AudioManager.Instance.Play("TransitionOut");
 
         yield return new WaitForSeconds(1f);
@@ -102,6 +102,7 @@ public class LevelManager : MonoBehaviour
             yield return null;
         }
 
+        Animator.Play(transition.ToString() + "_In");
         AudioManager.Instance.Play("TransitionIn");
     }
 }

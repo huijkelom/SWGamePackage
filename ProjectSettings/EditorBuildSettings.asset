@@ -5,10 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/SmartwallPackage/Utils/Initialization/Init.unity
     guid: 857f4437d97781f42aa290f2cc1f04f0
-  - enabled: 1
+  - enabled: 0
     path: Assets/Testing/SWButtonTest.unity
     guid: 04c155e782151b946864eac577eea869
   - enabled: 0
